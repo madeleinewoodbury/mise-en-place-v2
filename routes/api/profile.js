@@ -10,12 +10,9 @@ const Profile = require('../../models/Profile');
 // @route   GET /api/profile/me
 // @desc    Get current user's profile
 // @acess   Private
-router.get('/', auth, async (req, res) => {
+router.get('/me', auth, async (req, res) => {
   try {
-    const profile = await Profile.findOne({ id: req.user.id }).populate(
-      'user',
-      'name'
-    );
+    const profile = await Profile.findOne({ user: req.user.id });
     if (!profile) {
       return res.status(400).json({ msg: 'No profile found' });
     }
@@ -61,6 +58,7 @@ router.post(
 
     // Build profile fields
     const profileFields = {};
+    profileFields.user = req.user.id;
     if (status) profileFields.status = status;
     if (website) profileFields.website = website;
     if (location) profileFields.location = location;
@@ -79,7 +77,7 @@ router.post(
     if (instagram) profileFields.social.instagram = instagram;
 
     try {
-      let profile = await Profile.findOne({ id: req.user.id });
+      let profile = await Profile.findOne({ user: req.user.id });
 
       if (profile) {
         // Updtae profile
