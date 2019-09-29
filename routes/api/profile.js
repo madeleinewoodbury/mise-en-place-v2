@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const request = require('request');
 const config = require('config');
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
@@ -12,12 +11,31 @@ const Profile = require('../../models/Profile');
 // @acess   Private
 router.get('/me', auth, async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.user.id });
+    const profile = await Profile.findOne({ user: req.user.id }).populate(
+      'user',
+      'name'
+    );
     if (!profile) {
       return res.status(400).json({ msg: 'No profile found' });
     }
 
     res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   GET /api/profile
+// @desc    Get all user profiles
+// @acess   Public
+router.get('/', async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate('user', 'name');
+    if (!profiles) {
+      return res.status(400).json({ msg: 'No profiles found' });
+    }
+    res.json(profiles);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
