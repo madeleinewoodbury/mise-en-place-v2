@@ -7,13 +7,16 @@ const User = require('../../models/User');
 
 // @route   POST /api/recipes
 // @desc    Create a recipe
-// @acess   Public
+// @acess   Private
 router.post(
   '/',
   [
     auth,
     [
       check('name', 'Recipe name is required')
+        .not()
+        .isEmpty(),
+      check('description', 'Description is required')
         .not()
         .isEmpty(),
       check('ingredients', 'Ingredients are required')
@@ -36,6 +39,7 @@ router.post(
       const newRecipe = new Recipe({
         ingredients: req.body.ingredients.split(',').map(item => item.trim()),
         instructions: req.body.instructions,
+        description: req.body.description,
         name: req.body.name,
         author: user.name,
         user: req.user.id
@@ -49,5 +53,22 @@ router.post(
     }
   }
 );
+
+// @route   GET /api/recipes
+// @desc    Get all recipes
+// @acess   Private
+router.get('/', auth, async (req, res) => {
+  try {
+    const recipes = await Recipe.find().sort({ date: -1 });
+    if (!recipes) {
+      return res.status(400).json({ msg: 'No recipes found' });
+    }
+
+    res.json(recipes);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 module.exports = router;
