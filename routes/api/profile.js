@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const config = require('config');
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 const User = require('../../models/User');
@@ -28,8 +27,8 @@ router.get('/me', auth, async (req, res) => {
 
 // @route   GET /api/profile
 // @desc    Get all user profiles
-// @acess   Public
-router.get('/', async (req, res) => {
+// @acess   Private
+router.get('/', auth, async (req, res) => {
   try {
     const profiles = await Profile.find().populate('user', 'name');
     if (!profiles) {
@@ -121,8 +120,8 @@ router.post(
 
 // @route   GET /api/profile/user/:user_id
 // @desc    Get profile based on user ID
-// @acess   Public
-router.get('/user/:user_id', async (req, res) => {
+// @acess   Private
+router.get('/user/:user_id', auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.params.user_id
