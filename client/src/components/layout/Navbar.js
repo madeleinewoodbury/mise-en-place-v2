@@ -11,10 +11,10 @@ const Navbar = () => {
       </h1>
       <ul>
         <li>
-          <a href="!#">Register</a>
+          <Link to="/register">Register</Link>
         </li>
         <li>
-          <a href="!#">Login</a>
+          <Link to="/login">Login</Link>
         </li>
       </ul>
     </nav>
