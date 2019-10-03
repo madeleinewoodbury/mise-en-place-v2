@@ -145,4 +145,39 @@ router.put('/like/:id', auth, async (req, res) => {
   }
 });
 
+// @route   PUT /api/recipes/unlike/:id
+// @desc    Remove a like from a recipe
+// @acess   Private
+router.put('/unlike/:id', auth, async (req, res) => {
+  try {
+    const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) {
+      res.status(400).json({ msg: 'Recipe not found' });
+    }
+
+    // Check id recipe has already been liked by user
+    if (
+      recipe.likes.filter(like => like.user.toString() === req.user.id)
+        .length === 0
+    ) {
+      return res.status(400).json({ msg: 'Recipe has not yet been liked' });
+    }
+
+    // Get remove index
+    const removeIndex = recipe.likes
+      .map(like => like.user.toString())
+      .indexOf(req.user.id);
+
+    // Remove like
+    recipe.likes.splice(removeIndex, 1);
+    await recipe.save();
+    res.json(recipe.likes);
+  } catch (err) {
+    if (err.kind == 'ObjectId') {
+      return res.status(400).json({ msg: 'Recipe not found' });
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
