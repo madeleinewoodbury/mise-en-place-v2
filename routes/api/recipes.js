@@ -90,4 +90,29 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
+// @route   DELETE /api/recipes/:id
+// @desc    Delete a recipe
+// @acess   Private
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) {
+      res.status(400).json({ msg: 'Recipe not found' });
+    }
+
+    // Check user
+    if (recipe.user.toString() !== req.user.id) {
+      res.status(401).json({ msg: 'Not authorized' });
+    }
+
+    await recipe.remove();
+    res.json({ msg: 'Recipe deleted' });
+  } catch (err) {
+    if (err.kind == 'ObjectId') {
+      return res.status(400).json({ msg: 'Recipe not found' });
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
