@@ -71,4 +71,23 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+// @route   GET /api/recipes/:id
+// @desc    Get recipe by id
+// @acess   Private
+router.get('/:id', auth, async (req, res) => {
+  try {
+    const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) {
+      res.status(400).json({ msg: 'Recipe not found' });
+    }
+
+    res.json(recipe);
+  } catch (err) {
+    if (err.kind == 'ObjectId') {
+      return res.status(400).json({ msg: 'Recipe not found' });
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
