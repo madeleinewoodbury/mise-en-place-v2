@@ -42,6 +42,7 @@ router.post(
         description: req.body.description,
         name: req.body.name,
         author: user.name,
+        avatar: user.avatar,
         user: req.user.id
       });
 
