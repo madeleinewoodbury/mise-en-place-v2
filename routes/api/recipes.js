@@ -72,6 +72,34 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+// @route   GET /api/recipes/me
+// @desc    Get all of current user's recipes
+// @acess   Private
+router.get('/me', auth, async (req, res) => {
+  let recipes = [];
+  try {
+    const result = await Recipe.find().sort({ date: -1 });
+    if (!result) {
+      return res.status(400).json({ msg: 'No recipes found' });
+    }
+
+    for (recipe of result) {
+      if (recipe.user.toString() === req.user.id) {
+        recipes.push(recipe);
+      }
+    }
+
+    if (recipes.length === 0) {
+      return res.status(400).json({ msg: 'No recipes found' });
+    }
+
+    res.json(recipes);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route   GET /api/recipes/:id
 // @desc    Get recipe by id
 // @acess   Private
