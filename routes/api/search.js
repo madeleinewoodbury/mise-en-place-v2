@@ -75,6 +75,7 @@ router.get(
       }
       for (recipe of result) {
         if (recipe.name.toUpperCase().includes(searchValue.toUpperCase())) {
+          // Check user
           if (recipe.user.toString() === req.user.id) {
             recipes.push(recipe);
           }
@@ -86,6 +87,51 @@ router.get(
       }
 
       res.json(recipes);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
+// @route   GET /api/search/profile
+// @desc    Search for profile by users name
+// @acess   Private
+router.get(
+  '/profile',
+  [
+    auth,
+    check('search', 'Search field is required')
+      .not()
+      .isEmpty()
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    let searchValue = req.body.search;
+    let profiles = [];
+
+    try {
+      const result = await Profile.find().populate('user', ['name', 'avatar']);
+      if (!result) {
+        res.status(400).json({ msg: 'No profiles found' });
+      }
+      for (profile of result) {
+        if (
+          profile.user.name.toUpperCase().includes(searchValue.toUpperCase())
+        ) {
+          profiles.push(profile);
+        }
+      }
+
+      if (profiles.length === 0) {
+        res.status(400).json({ msg: 'No profiles found' });
+      }
+
+      res.json(profiles);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
