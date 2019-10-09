@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { getCurrentProfile } from '../../actions/profile';
 import Spinner from '../layout/Spinner';
 import DashboardActions from './DashboardActions';
+import DashboardRecipes from './DashboardRecipes';
 
 const Dashboard = ({
   getCurrentProfile,
@@ -14,10 +15,28 @@ const Dashboard = ({
   useEffect(() => {
     getCurrentProfile();
   }, []);
+
+  const recipes = [
+    {
+      _id: 111,
+      name: 'PJ Sandwich',
+      category: 'Snacks',
+      date: '2019-10-09T01:17:24.610+00:00',
+      likes: 12
+    },
+    {
+      _id: 112,
+      name: 'Pizza',
+      category: 'Dinner',
+      date: '2019-11-09T01:17:24.610+00:00',
+      likes: 23
+    }
+  ];
+
   return loading && profile === null ? (
     <Spinner />
   ) : (
-    <Fragment>
+    <div className="dashboard">
       <h1 className="large text-primary">Dashboard</h1>
       <p className="lead">
         <i className="fas fa-user"></i> Welcome {user && user.name}
@@ -25,6 +44,16 @@ const Dashboard = ({
       {profile !== null ? (
         <Fragment>
           <DashboardActions />
+          <div className="recipes-title my-1">
+            <h2 className="text-primary">My Recipes</h2>
+            <form className="dash-form">
+              <input type="text" placeholder="Search..." name="search" />
+              <button className="search-btn" type="submit">
+                <i className="fa fa-search"></i>
+              </button>
+            </form>
+          </div>
+          <DashboardRecipes recipes={recipes} />
         </Fragment>
       ) : (
         <Fragment>
@@ -34,7 +63,7 @@ const Dashboard = ({
           </Link>
         </Fragment>
       )}
-    </Fragment>
+    </div>
   );
 };
 
