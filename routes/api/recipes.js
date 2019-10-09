@@ -24,6 +24,9 @@ router.post(
         .isEmpty(),
       check('instructions', 'Instructions are required')
         .not()
+        .isEmpty(),
+      check('category', 'Category is required')
+        .not()
         .isEmpty()
     ]
   ],
@@ -41,6 +44,7 @@ router.post(
         instructions: req.body.instructions,
         description: req.body.description,
         name: req.body.name,
+        category: req.body.category,
         author: user.name,
         avatar: user.avatar,
         user: req.user.id
