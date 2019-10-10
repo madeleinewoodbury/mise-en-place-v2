@@ -2,7 +2,8 @@ import {
   GET_RECIPES,
   GET_RECIPE,
   RECIPE_ERROR,
-  RECIPES_SEARCH
+  RECIPES_SEARCH,
+  CLEAR_RECIPE
 } from '../actions/types';
 
 const initialState = {
@@ -26,6 +27,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         recipe: payload,
+        loading: false
+      };
+    case CLEAR_RECIPE:
+      return {
+        ...state,
+        recipes: [],
+        recipe: null,
         loading: false
       };
     case RECIPE_ERROR:

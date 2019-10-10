@@ -16,6 +16,7 @@ import PrivateRoute from './components/routing/PrivateRoute';
 import CreateProfile from './components/profile/CreateProfile';
 import EditProfile from './components/profile/EditProfile';
 import Recipe from './components/recipe/Recipe';
+import Recipes from './components/recipes/Recipes';
 import './App.css';
 
 if (localStorage.token) {
@@ -45,6 +46,7 @@ const App = () => {
             />
             <PrivateRoute exact path="/edit-profile" component={EditProfile} />
             <PrivateRoute exact path="/recipe/:id" component={Recipe} />
+            <PrivateRoute exact path="/recipes" component={Recipes} />
           </Switch>
         </section>
       </Fragment>
