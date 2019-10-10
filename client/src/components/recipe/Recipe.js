@@ -2,6 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Spinner from '../layout/Spinner';
 import RecipeTop from './RecipeTop';
+import RecipeInstructions from './RecipeInstructions';
 import { connect } from 'react-redux';
 import { getRecipeById } from '../../actions/recipes';
 import PropTypes from 'prop-types';
@@ -16,9 +17,6 @@ const Recipe = ({
     getRecipeById(match.params.id);
   }, [getRecipeById, match.params.id]);
 
-  // const ingredientsList = ingredients.map((item, id) => (
-  //   <li key={id}>{item}</li>
-  // ));
   return (
     <Fragment>
       {recipe === null || loading ? (
@@ -29,52 +27,21 @@ const Recipe = ({
             <Link to="/" className="btn btn-light">
               Go Back
             </Link>
+            {auth.isAuthenticated &&
+              !auth.loading &&
+              auth.user._id === recipe.user && (
+                <Link to="/edit-profile" className="btn btn-dark">
+                  Edit Profile
+                </Link>
+              )}
             <div className="recipe-grid my-1">
               <RecipeTop recipe={recipe} />
+              <RecipeInstructions recipe={recipe} />
             </div>
           </div>
         </Fragment>
       )}
     </Fragment>
-
-    //   <div className="recipe-grid my-1">
-    //     <div className="recipe-info bg-primary p-2">
-    //       <div className="description">
-    //         <h1 className="large text-white">{name}</h1>
-    //         <p>{description}</p>
-    //         <button type="button" className="btn btn-light">
-    //           <i className="fas fa-thumbs-up"></i>{' '}
-    //           <span>{likes.length > 0 ? likes.length : null}</span>
-    //         </button>
-    //         <button type="button" className="btn btn-light">
-    //           <i className="fas fa-thumbs-down"></i>
-    //         </button>
-    //       </div>
-    //       <div className="info-container">
-    //         <div>
-    //           <img className="recipe-img" src={avatar} alt="avatar" />
-    //         </div>
-
-    //         <div>
-    //           <h3>{author}</h3>
-    //           <p className="small-text text-white">
-    //             Posted: <Moment format="MM/DD/YYYY">{date}</Moment>
-    //           </p>
-    //         </div>
-    //       </div>
-    //     </div>
-    //     <div className="ingredients bg-white p-2">
-    //       <h2 className="text-primary">Ingredients</h2>
-    //       <ul>{ingredientsList}</ul>
-    //     </div>
-    //     <div className="instructions bg-white p-2">
-    //       <h2 className="text-primary">Instructions</h2>
-    //       <div>
-    //         <p>{instructions}</p>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
   );
 };
 
