@@ -7,7 +7,16 @@ const DashboardRecipes = ({ recipes }) => {
   const tableRecipes = recipes.map(recipe => (
     <tr key={recipe._id}>
       <td>
-        <Link to="/recipe">{recipe.name}</Link>
+        <Link
+          to={{
+            pathname: '/recipe',
+            state: {
+              recipe: recipe
+            }
+          }}
+        >
+          {recipe.name}
+        </Link>
       </td>
       <td className="hide-sm">{recipe.category}</td>
       <td className="hide-sm">

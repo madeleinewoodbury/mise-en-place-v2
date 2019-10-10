@@ -15,6 +15,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import PrivateRoute from './components/routing/PrivateRoute';
 import CreateProfile from './components/profile/CreateProfile';
 import EditProfile from './components/profile/EditProfile';
+import Recipe from './components/recipes/Recipe';
 import './App.css';
 
 if (localStorage.token) {
@@ -43,6 +44,7 @@ const App = () => {
               component={CreateProfile}
             />
             <PrivateRoute exact path="/edit-profile" component={EditProfile} />
+            <PrivateRoute exact path="/recipe" component={Recipe} />
           </Switch>
         </section>
       </Fragment>
