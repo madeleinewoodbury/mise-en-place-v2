@@ -51,48 +51,34 @@ router.get(
 // @route   GET /api/search/recipe/me
 // @desc    Search current user's recpie by name
 // @acess   Private
-router.get(
-  '/recipe/me',
-  [
-    auth,
-    check('search', 'Search field is required')
-      .not()
-      .isEmpty()
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+router.get('/recipe/me/:name', auth, async (req, res) => {
+  let searchValue = req.params.name;
+  let recipes = [];
+
+  try {
+    const result = await Recipe.find().sort({ date: -1 });
+    if (!result) {
+      res.status(400).json({ msg: 'No recipes found' });
     }
-
-    let searchValue = req.body.search;
-    let recipes = [];
-
-    try {
-      const result = await Recipe.find().sort({ date: -1 });
-      if (!result) {
-        res.status(400).json({ msg: 'No recipes found' });
-      }
-      for (recipe of result) {
-        if (recipe.name.toUpperCase().includes(searchValue.toUpperCase())) {
-          // Check user
-          if (recipe.user.toString() === req.user.id) {
-            recipes.push(recipe);
-          }
+    for (recipe of result) {
+      if (recipe.name.toUpperCase().includes(searchValue.toUpperCase())) {
+        // Check user
+        if (recipe.user.toString() === req.user.id) {
+          recipes.push(recipe);
         }
       }
-
-      if (recipes.length === 0) {
-        res.status(400).json({ msg: 'No recipes found' });
-      }
-
-      res.json(recipes);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
     }
+
+    if (recipes.length === 0) {
+      res.status(400).json({ msg: 'No recipes found' });
+    }
+
+    res.json(recipes);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
-);
+});
 
 // @route   GET /api/search/profile
 // @desc    Search for profile by users name

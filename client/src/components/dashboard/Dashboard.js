@@ -1,9 +1,9 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getCurrentProfile } from '../../actions/profile';
-import { getUserRecipes } from '../../actions/recipes';
+import { getUserRecipes, searchUserRecipes } from '../../actions/recipes';
 import Spinner from '../layout/Spinner';
 import DashboardActions from './DashboardActions';
 import DashboardRecipes from './DashboardRecipes';
@@ -11,6 +11,7 @@ import DashboardRecipes from './DashboardRecipes';
 const Dashboard = ({
   getCurrentProfile,
   getUserRecipes,
+  searchUserRecipes,
   auth: { user },
   profile: { profile, loading },
   recipes: { recipes }
@@ -20,22 +21,17 @@ const Dashboard = ({
     getUserRecipes();
   }, []);
 
-  // const recipes = [
-  //   {
-  //     _id: 111,
-  //     name: 'PJ Sandwich',
-  //     category: 'Snacks',
-  //     date: '2019-10-09T01:17:24.610+00:00',
-  //     likes: 12
-  //   },
-  //   {
-  //     _id: 112,
-  //     name: 'Pizza',
-  //     category: 'Dinner',
-  //     date: '2019-11-09T01:17:24.610+00:00',
-  //     likes: 23
-  //   }
-  // ];
+  const [search, setSearchData] = useState('');
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (search !== '') {
+      searchUserRecipes(search);
+    } else {
+      getUserRecipes();
+    }
+    setSearchData('');
+  };
 
   return loading && profile === null ? (
     <Spinner />
@@ -50,8 +46,14 @@ const Dashboard = ({
           <DashboardActions />
           <div className="recipes-title my-1">
             <h2 className="text-primary">My Recipes</h2>
-            <form className="dash-form">
-              <input type="text" placeholder="Search..." name="search" />
+            <form className="dash-form" onSubmit={e => handleSubmit(e)}>
+              <input
+                type="text"
+                placeholder="Search..."
+                name="search"
+                value={search}
+                onChange={e => setSearchData(e.target.value)}
+              />
               <button className="search-btn" type="submit">
                 <i className="fa fa-search"></i>
               </button>
@@ -74,6 +76,7 @@ const Dashboard = ({
 Dashboard.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
   getUserRecipes: PropTypes.func.isRequired,
+  searchUserRecipes: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
   recipes: PropTypes.object.isRequired
@@ -87,5 +90,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCurrentProfile, getUserRecipes }
+  { getCurrentProfile, getUserRecipes, searchUserRecipes }
 )(Dashboard);
