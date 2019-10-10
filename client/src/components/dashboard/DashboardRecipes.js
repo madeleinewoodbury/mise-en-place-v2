@@ -14,7 +14,7 @@ const DashboardRecipes = ({ recipes }) => {
         <Moment format="MM/DD/YYYY">{recipe.date}</Moment>
       </td>
       <td className="hide-sm">
-        <i className="far fa-thumbs-up"></i> {recipe.likes}
+        <i className="far fa-thumbs-up"></i> {recipe.likes.length}
       </td>
     </tr>
   ));

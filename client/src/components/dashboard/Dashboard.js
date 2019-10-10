@@ -3,35 +3,39 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getCurrentProfile } from '../../actions/profile';
+import { getUserRecipes } from '../../actions/recipes';
 import Spinner from '../layout/Spinner';
 import DashboardActions from './DashboardActions';
 import DashboardRecipes from './DashboardRecipes';
 
 const Dashboard = ({
   getCurrentProfile,
+  getUserRecipes,
   auth: { user },
-  profile: { profile, loading }
+  profile: { profile, loading },
+  recipes: { recipes }
 }) => {
   useEffect(() => {
     getCurrentProfile();
+    getUserRecipes();
   }, []);
 
-  const recipes = [
-    {
-      _id: 111,
-      name: 'PJ Sandwich',
-      category: 'Snacks',
-      date: '2019-10-09T01:17:24.610+00:00',
-      likes: 12
-    },
-    {
-      _id: 112,
-      name: 'Pizza',
-      category: 'Dinner',
-      date: '2019-11-09T01:17:24.610+00:00',
-      likes: 23
-    }
-  ];
+  // const recipes = [
+  //   {
+  //     _id: 111,
+  //     name: 'PJ Sandwich',
+  //     category: 'Snacks',
+  //     date: '2019-10-09T01:17:24.610+00:00',
+  //     likes: 12
+  //   },
+  //   {
+  //     _id: 112,
+  //     name: 'Pizza',
+  //     category: 'Dinner',
+  //     date: '2019-11-09T01:17:24.610+00:00',
+  //     likes: 23
+  //   }
+  // ];
 
   return loading && profile === null ? (
     <Spinner />
@@ -53,7 +57,7 @@ const Dashboard = ({
               </button>
             </form>
           </div>
-          <DashboardRecipes recipes={recipes} />
+          {recipes !== null && <DashboardRecipes recipes={recipes} />}
         </Fragment>
       ) : (
         <Fragment>
@@ -69,16 +73,19 @@ const Dashboard = ({
 
 Dashboard.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
+  getUserRecipes: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired
+  profile: PropTypes.object.isRequired,
+  recipes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  profile: state.profile
+  profile: state.profile,
+  recipes: state.recipes
 });
 
 export default connect(
   mapStateToProps,
-  { getCurrentProfile }
+  { getCurrentProfile, getUserRecipes }
 )(Dashboard);
