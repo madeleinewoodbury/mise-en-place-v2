@@ -77,3 +77,19 @@ export const searchUserRecipes = name => async dispatch => {
     });
   }
 };
+
+// Search for recipes by name
+export const searchRecipes = name => async dispatch => {
+  try {
+    const res = await axios.get(`/api/search/recipe/${name}`);
+    dispatch({
+      type: RECIPES_SEARCH,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: RECIPE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};

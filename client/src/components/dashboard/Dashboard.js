@@ -46,7 +46,7 @@ const Dashboard = ({
           <DashboardActions />
           <div className="recipes-title my-1">
             <h2 className="text-primary">My Recipes</h2>
-            <form className="dash-form" onSubmit={e => handleSubmit(e)}>
+            <form className="search-form" onSubmit={e => handleSubmit(e)}>
               <input
                 type="text"
                 placeholder="Search..."

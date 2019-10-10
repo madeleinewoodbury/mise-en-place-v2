@@ -334,12 +334,12 @@ button {
   flex-direction: column;
 }
 
-.dash-form,
+.search-form,
 .profiles-form {
   display: flex;
 }
 
-.dash-form input[type='text'],
+.search-form input[type='text'],
 .profiles-form input[type='text'] {
   display: block;
   padding: 0.4rem;
@@ -355,7 +355,7 @@ button {
   margin-top: 2rem;
 }
 
-.dash-form .search-btn,
+.search-form .search-btn,
 .profiles-form .search-btn {
   margin-left: 0;
   border-left: none;
