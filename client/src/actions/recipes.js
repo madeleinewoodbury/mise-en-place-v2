@@ -1,4 +1,4 @@
-import { GET_RECIPES, RECIPES_ERROR, RECIPES_SEARCH } from './types';
+import { GET_RECIPES, GET_RECIPE, RECIPE_ERROR, RECIPES_SEARCH } from './types';
 import axios from 'axios';
 import { setAlert } from './alert';
 
@@ -12,7 +12,22 @@ export const getUserRecipes = () => async dispatch => {
     });
   } catch (err) {
     dispatch({
-      type: RECIPES_ERROR,
+      type: RECIPE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+export const getRecipeById = id => async dispatch => {
+  try {
+    const res = await axios.get(`/api/recipes/${id}`);
+    dispatch({
+      type: GET_RECIPE,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: RECIPE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
@@ -28,7 +43,7 @@ export const searchUserRecipes = name => async dispatch => {
     });
   } catch (err) {
     dispatch({
-      type: RECIPES_ERROR,
+      type: RECIPE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }

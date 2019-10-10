@@ -11,5 +11,6 @@ export const GET_PROFILE = 'GET_PROFILE';
 export const PROFILE_ERROR = 'PROFILE_ERROR';
 export const CLEAR_PROFILE = 'CLEAR_PROFILE';
 export const GET_RECIPES = 'GET_RECIPES';
-export const RECIPES_ERROR = 'RECIPES_ERROR';
+export const GET_RECIPE = 'GET_RECIPE';
+export const RECIPE_ERROR = 'RECIPE_ERROR';
 export const RECIPES_SEARCH = 'RECIPES_SEARCH';

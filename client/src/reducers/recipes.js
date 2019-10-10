@@ -1,7 +1,13 @@
-import { GET_RECIPES, RECIPES_ERROR, RECIPES_SEARCH } from '../actions/types';
+import {
+  GET_RECIPES,
+  GET_RECIPE,
+  RECIPE_ERROR,
+  RECIPES_SEARCH
+} from '../actions/types';
 
 const initialState = {
   recipes: [],
+  recipe: null,
   loading: true,
   error: {}
 };
@@ -16,7 +22,13 @@ export default function(state = initialState, action) {
         recipes: payload,
         loading: false
       };
-    case RECIPES_ERROR:
+    case GET_RECIPE:
+      return {
+        ...state,
+        recipe: payload,
+        loading: false
+      };
+    case RECIPE_ERROR:
       return {
         ...state,
         error: payload,
