@@ -7,7 +7,8 @@ const ProfileAbout = ({
     user: { name, date },
     bio,
     favoriteFoods
-  }
+  },
+  recipes
 }) => {
   const foodsList = favoriteFoods.map(food => (
     <div className="p-1">
@@ -33,7 +34,7 @@ const ProfileAbout = ({
       </p>
       <div className="line"></div>
       <h2 className="text-primary">Recipes Added</h2>
-      <p>14</p>
+      <p>{recipes}</p>
     </div>
   );
 };

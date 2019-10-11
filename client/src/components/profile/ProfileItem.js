@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 const ProfileItem = ({
   profile: {
     location,
+    status,
     user: { name, avatar, _id }
   }
 }) => {
@@ -16,10 +17,8 @@ const ProfileItem = ({
 
       <div className="profile-info">
         <h2>{name}</h2>
-        <p>{location}</p>
-        <p>
-          <em>14 recipes</em>
-        </p>
+        <p>{status}</p>
+        <p>{location && <em>{location}</em>}</p>
       </div>
       <div>
         <Link to={`/profile/${_id}`} className="btn btn-primary">
@@ -30,6 +29,9 @@ const ProfileItem = ({
   );
 };
 
-ProfileItem.propTypes = {};
+ProfileItem.propTypes = {
+  getRecipesByUserId: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired
+};
 
 export default ProfileItem;

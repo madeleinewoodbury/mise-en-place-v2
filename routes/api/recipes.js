@@ -124,7 +124,7 @@ router.get('/:id', auth, async (req, res) => {
 });
 
 // @route   GET /api/recipes/user/:user_id
-// @desc    Get recipe by userid
+// @desc    Get recipes by userid
 // @acess   Private
 router.get('/user/:user_id', auth, async (req, res) => {
   let recipes = [];

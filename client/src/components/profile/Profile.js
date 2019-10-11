@@ -6,12 +6,20 @@ import ProfileAbout from './ProfileAbout';
 import ProfileRecipes from './ProfileRecipes';
 import { connect } from 'react-redux';
 import { getProfile } from '../../actions/profile';
+import { getRecipesByUserId } from '../../actions/recipes';
 import PropTypes from 'prop-types';
 
-const Profile = ({ getProfile, profile: { profile, loading }, match }) => {
+const Profile = ({
+  getProfile,
+  getRecipesByUserId,
+  profile: { profile, loading },
+  recipes: { recipes },
+  match
+}) => {
   useEffect(() => {
     getProfile(match.params.id);
-  }, [getProfile, match.params.id]);
+    getRecipesByUserId(match.params.id);
+  }, [getProfile, getRecipesByUserId, match.params.id]);
   return (
     <Fragment>
       {profile === null || loading ? (
@@ -23,7 +31,7 @@ const Profile = ({ getProfile, profile: { profile, loading }, match }) => {
           </Link>
           <div className="profile-grid my-1">
             <ProfileTop profile={profile} />
-            <ProfileAbout profile={profile} />
+            <ProfileAbout profile={profile} recipes={recipes.length} />
             <ProfileRecipes />
             <button class="btn btn-light">View All John's Recipes</button>
           </div>
@@ -35,14 +43,17 @@ const Profile = ({ getProfile, profile: { profile, loading }, match }) => {
 
 Profile.propTypes = {
   getProfile: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired
+  getRecipesByUserId: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired,
+  recipes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  profile: state.profile
+  profile: state.profile,
+  recipes: state.recipes
 });
 
 export default connect(
   mapStateToProps,
-  { getProfile }
+  { getProfile, getRecipesByUserId }
 )(Profile);

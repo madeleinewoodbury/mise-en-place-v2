@@ -62,6 +62,26 @@ export const getRecipeById = id => async dispatch => {
   }
 };
 
+// Get recipe by user id
+export const getRecipesByUserId = userId => async dispatch => {
+  dispatch({
+    type: CLEAR_RECIPE
+  });
+  try {
+    const res = await axios.get(`/api/recipes/user/${userId}`);
+    console.log(res.data);
+    dispatch({
+      type: GET_RECIPES,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: RECIPE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
 // Search for current user's recipes
 export const searchUserRecipes = name => async dispatch => {
   try {
