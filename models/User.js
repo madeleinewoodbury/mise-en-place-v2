@@ -17,7 +17,8 @@ const UserSchema = new Schema({
   },
   avatar: {
     type: String,
-    required: true
+    default:
+      'http://www.gravatar.com/avatar/b2b146dba9e0023cb56637f0df4aa005?s=200&r=pg&d=mp'
   },
   date: {
     type: Date,
