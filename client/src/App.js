@@ -18,6 +18,7 @@ import EditProfile from './components/profile/EditProfile';
 import Recipe from './components/recipe/Recipe';
 import Recipes from './components/recipes/Recipes';
 import Profiles from './components/profile/Profiles';
+import Profile from './components/profile/Profile';
 import './App.css';
 
 if (localStorage.token) {
@@ -49,6 +50,7 @@ const App = () => {
             <PrivateRoute exact path="/recipe/:id" component={Recipe} />
             <PrivateRoute exact path="/recipes" component={Recipes} />
             <PrivateRoute exact path="/profiles" component={Profiles} />
+            <PrivateRoute exact path="/profile/:id" component={Profile} />
           </Switch>
         </section>
       </Fragment>
