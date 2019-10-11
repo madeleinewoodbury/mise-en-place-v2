@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import Moment from 'react-moment';
 
 const ProfileAbout = ({
   profile: {
-    user: { name },
+    user: { name, date },
     bio,
     favoriteFoods
   }
@@ -27,7 +28,9 @@ const ProfileAbout = ({
       <div className="favorites">{foodsList}</div>
       <div className="line"></div>
       <h2 className="text-primary">Member Since</h2>
-      <p>10/01/2019</p>
+      <p>
+        <Moment format="MM/DD/YYYY">{date}</Moment>
+      </p>
       <div className="line"></div>
       <h2 className="text-primary">Recipes Added</h2>
       <p>14</p>

@@ -64,7 +64,7 @@ router.post(
 // @acess   Private
 router.get('/', auth, async (req, res) => {
   try {
-    const recipes = await Recipe.find().sort({ date: -1 });
+    const result = await Recipe.find().sort({ date: -1 });
     if (!recipes) {
       return res.status(400).json({ msg: 'No recipes found' });
     }
@@ -115,6 +115,32 @@ router.get('/:id', auth, async (req, res) => {
     }
 
     res.json(recipe);
+  } catch (err) {
+    if (err.kind == 'ObjectId') {
+      return res.status(400).json({ msg: 'Recipe not found' });
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   GET /api/recipes/user/:user_id
+// @desc    Get recipe by userid
+// @acess   Private
+router.get('/user/:user_id', auth, async (req, res) => {
+  let recipes = [];
+  try {
+    const result = await Recipe.find().sort({ date: -1 });
+    if (!result) {
+      res.status(400).json({ msg: 'Recipes not found' });
+    }
+
+    for (recipe of result) {
+      if (recipe.user.toString() === req.params.user_id) {
+        recipes.push(recipe);
+      }
+    }
+
+    res.json(recipes);
   } catch (err) {
     if (err.kind == 'ObjectId') {
       return res.status(400).json({ msg: 'Recipe not found' });

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import SocialLink from './SocialLink';
 
@@ -8,7 +8,7 @@ const ProfileTop = ({
     status,
     location,
     website,
-    social: { twitter, facebook, instagram, linkedin, youtube }
+    social
   }
 }) => {
   return (
@@ -22,17 +22,34 @@ const ProfileTop = ({
         <p>{location && <span>{location}</span>}</p>
         <div className="icons my-1">
           {website && <SocialLink link={website} icon="fas fa-globe fa-2x" />}
-          {twitter && <SocialLink link={twitter} icon="fab fa-twitter fa-2x" />}
-          {facebook && (
-            <SocialLink link={facebook} icon="fab fa-facebook fa-2x" />
+          {social && (
+            <Fragment>
+              {social.twitter && (
+                <SocialLink link={social.twitter} icon="fab fa-twitter fa-2x" />
+              )}
+              {social.facebook && (
+                <SocialLink
+                  link={social.facebook}
+                  icon="fab fa-facebook fa-2x"
+                />
+              )}
+              {social.linkedin && (
+                <SocialLink
+                  link={social.linkedin}
+                  icon="fab fa-linkedin fa-2x"
+                />
+              )}
+              {social.instagram && (
+                <SocialLink
+                  link={social.instagram}
+                  icon="fab fa-instagram fa-2x"
+                />
+              )}
+              {social.youtube && (
+                <SocialLink link={social.youtube} icon="fab fa-youtube fa-2x" />
+              )}
+            </Fragment>
           )}
-          {linkedin && (
-            <SocialLink link={linkedin} icon="fab fa-linkedin fa-2x" />
-          )}
-          {instagram && (
-            <SocialLink link={instagram} icon="fab fa-instagram fa-2x" />
-          )}
-          {youtube && <SocialLink link={youtube} icon="fab fa-youtube fa-2x" />}
         </div>
       </div>
     </div>
