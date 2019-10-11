@@ -19,6 +19,7 @@ import Recipe from './components/recipe/Recipe';
 import Recipes from './components/recipes/Recipes';
 import Profiles from './components/profile/Profiles';
 import Profile from './components/profile/Profile';
+import FileUpload from './components/test/FileUpload';
 import './App.css';
 
 if (localStorage.token) {
@@ -40,6 +41,7 @@ const App = () => {
           <Switch>
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
+            <Route exact path="/upload" component={FileUpload} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
             <PrivateRoute
               exact

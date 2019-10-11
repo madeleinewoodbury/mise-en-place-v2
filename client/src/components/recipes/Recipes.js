@@ -67,7 +67,7 @@ const Recipes = ({
 
 Recipes.propTypes = {
   getRecipes: PropTypes.func.isRequired,
-  recipes: PropTypes.object.isRequired
+  recipes: PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => ({

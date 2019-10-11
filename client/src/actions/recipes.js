@@ -6,7 +6,6 @@ import {
   CLEAR_RECIPE
 } from './types';
 import axios from 'axios';
-import { setAlert } from './alert';
 
 // Get current user's recipes
 export const getUserRecipes = () => async dispatch => {
@@ -69,7 +68,6 @@ export const getRecipesByUserId = userId => async dispatch => {
   });
   try {
     const res = await axios.get(`/api/recipes/user/${userId}`);
-    console.log(res.data);
     dispatch({
       type: GET_RECIPES,
       payload: res.data

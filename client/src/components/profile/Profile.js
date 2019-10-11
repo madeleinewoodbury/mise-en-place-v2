@@ -32,8 +32,12 @@ const Profile = ({
           <div className="profile-grid my-1">
             <ProfileTop profile={profile} />
             <ProfileAbout profile={profile} recipes={recipes.length} />
-            <ProfileRecipes />
-            <button class="btn btn-light">View All John's Recipes</button>
+            {recipes.length > 0 && <ProfileRecipes recipes={recipes} />}
+            {recipes.length > 3 && (
+              <button className="btn btn-light">
+                View All of {profile.user.name.trim().split(' ')[0]}'s Recipes
+              </button>
+            )}
           </div>
         </Fragment>
       )}

@@ -5,11 +5,7 @@ import { connect } from 'react-redux';
 import { getProfiles } from '../../actions/profile';
 import PropTypes from 'prop-types';
 
-const Profiles = ({
-  getProfiles,
-  getRecipes,
-  profile: { profiles, loading }
-}) => {
+const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
   useEffect(() => {
     getProfiles();
   }, [getProfiles]);
@@ -42,7 +38,6 @@ const Profiles = ({
 
 Profiles.propTypes = {
   getProfiles: PropTypes.func.isRequired,
-  getRecipes: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired
 };
 

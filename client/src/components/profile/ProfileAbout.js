@@ -19,7 +19,7 @@ const ProfileAbout = ({
     <div className="profile-about bg-light p-2">
       {bio && (
         <Fragment>
-          <h2 className="text-primary">About {name}</h2>
+          <h2 className="text-primary">About {name.trim().split(' ')[0]}</h2>
           <p>{bio}</p>
           <div className="line"></div>
         </Fragment>
@@ -40,7 +40,8 @@ const ProfileAbout = ({
 };
 
 ProfileAbout.propTypes = {
-  profile: PropTypes.object.isRequired
+  profile: PropTypes.object.isRequired,
+  recipes: PropTypes.number.isRequired
 };
 
 export default ProfileAbout;

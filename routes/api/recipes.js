@@ -64,7 +64,7 @@ router.post(
 // @acess   Private
 router.get('/', auth, async (req, res) => {
   try {
-    const result = await Recipe.find().sort({ date: -1 });
+    const recipes = await Recipe.find().sort({ date: -1 });
     if (!recipes) {
       return res.status(400).json({ msg: 'No recipes found' });
     }

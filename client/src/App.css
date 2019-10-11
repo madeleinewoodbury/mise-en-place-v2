@@ -298,9 +298,50 @@ ul {
   border: 1px solid #ccc;
 }
 
+.file-form input[type='file'] {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute !important;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.file-group {
+  display: flex;
+  width: 100%;
+}
+
+.file-text {
+  background-color: white;
+  padding-top: 0.4rem;
+  padding-left: 0.4rem;
+  font-size: 1.2rem;
+  border: 1px solid #ccc;
+  width: 70%;
+}
+
+.file-input {
+  width: 30%;
+}
+
+.file-input .file-btn {
+  background: var(--light-color);
+  color: var(--dark-color);
+  border-radius: 0;
+  border: 1px solid #ccc;
+  border-left: none;
+}
+
 .form input[type='submit'],
 button {
   font: inherit;
+}
+
+.file-form input[type='submit'] {
+  padding: 0.5rem 1.3rem;
 }
 
 .form .social-input {
@@ -340,7 +381,8 @@ button {
 }
 
 .search-form input[type='text'],
-.profiles-form input[type='text'] {
+.profiles-form input[type='text'],
+.file-form input[type='text'] {
   display: block;
   padding: 0.4rem;
   font-size: 1.2rem;

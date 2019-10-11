@@ -4,7 +4,7 @@ import SocialLink from './SocialLink';
 
 const ProfileTop = ({
   profile: {
-    user: { name, avatar, _id },
+    user: { name, avatar },
     status,
     location,
     website,

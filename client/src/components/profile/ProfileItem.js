@@ -30,7 +30,6 @@ const ProfileItem = ({
 };
 
 ProfileItem.propTypes = {
-  getRecipesByUserId: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired
 };
 
