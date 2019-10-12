@@ -4,7 +4,6 @@ const fileUpload = require('express-fileupload');
 const cloudinary = require('cloudinary').v2;
 const config = require('config');
 const User = require('../../models/User');
-const Recipes = require('../../models/Recipe');
 
 const router = express.Router();
 
@@ -32,7 +31,7 @@ router.post('/', auth, async (req, res) => {
   if (!file.name.match(/\.(jpg|jpeg|png|gif)$/i)) {
     return res.status(400).json({ msg: 'Invalid Format' });
   }
-  if (file.size > 1000000) {
+  if (file.size > 3000000) {
     return res.status(400).json({ msg: 'Image is too large' });
   }
   const result = await cloudinary.uploader.upload(file.tempFilePath);
@@ -46,7 +45,7 @@ router.post('/', auth, async (req, res) => {
       { $set: { avatar: result.url } },
       { new: true }
     );
-    res.json(user);
+    res.json(result);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

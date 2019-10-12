@@ -39,7 +39,7 @@ const EditAvatar = ({ editAvatar, history }) => {
             </label>
           </div>
         </div>
-
+        <p>Max image size 3MB</p>
         <input type="submit" className="btn btn-primary my-1" />
         <Link className="btn btn-light my-1" to="/dashboard">
           Go Back

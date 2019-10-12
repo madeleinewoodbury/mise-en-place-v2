@@ -12,7 +12,7 @@ const ProfileItem = ({
   return (
     <div className="profile bg-light">
       <div className="img-container">
-        <img className="profile-img" src={avatar} alt="avatar" />
+        <img className="profiles-img" src={avatar} alt="avatar" />
       </div>
 
       <div className="profile-info">

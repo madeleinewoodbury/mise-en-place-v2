@@ -40,9 +40,15 @@ const Dashboard = ({
       {profile !== null ? (
         <Fragment>
           <div className="dash-top my-1 p-1">
-            <h1 className="large text-white">Welcome {user && user.name}</h1>
+            <h1 className="large text-white">
+              Welcome {user && user.name.trim().split(' ')[0]}
+            </h1>
             <div className="img-container">
-              <img className="dash-img" src={user.avatar} alt="avatar" />
+              <img
+                className="dash-img"
+                src={profile.user.avatar}
+                alt="avatar"
+              />
             </div>
             <DashboardActions />
           </div>
@@ -62,14 +68,25 @@ const Dashboard = ({
               </button>
             </form>
           </div>
-          {recipes !== null && <DashboardRecipes recipes={recipes} />}
+          {recipes.length > 0 ? (
+            <DashboardRecipes recipes={recipes} />
+          ) : (
+            <p>You have not added any recipes yet</p>
+          )}
         </Fragment>
       ) : (
         <Fragment>
-          <p>You have not yet set up a profile, please add some info</p>
-          <Link to="/create-profile" className="btn btn-primary my-1">
-            Create Profile
-          </Link>
+          <div className="dash-top my-1 p-1">
+            <h1 className="large text-white">
+              Welcome {user && user.name.trim().split(' ')[0]}
+            </h1>
+            <p className="lead">
+              You have not yet set up a profile, please add some info
+            </p>
+            <Link to="/create-profile" className="btn btn-light my-1">
+              <i className="fas fa-user-circle text-primary"></i> Create Profile
+            </Link>
+          </div>
         </Fragment>
       )}
     </div>

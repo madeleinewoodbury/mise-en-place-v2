@@ -323,6 +323,11 @@ ul {
   width: 70%;
 }
 
+.file-form p {
+  margin-top: 0.3rem;
+  color: #888;
+}
+
 .file-input {
   width: 30%;
 }
@@ -380,9 +385,6 @@ button {
   flex-direction: column;
   align-items: center;
   background-color: var(--success-color);
-}
-
-.dash-img {
 }
 
 .search-form,
@@ -454,11 +456,19 @@ button {
 }
 
 .profile-img,
-.dash-img {
-  width: 150px;
-  height: auto;
+.dash-img,
+.profiles-img {
+  width: 200px;
+  max-height: 200px;
+  object-fit: cover;
   border-radius: 50%;
   margin-right: 0.5rem;
+}
+
+.profiles-img {
+  width: 150px;
+  max-height: 150px;
+  object-fit: cover;
 }
 
 /* Profile Page */
