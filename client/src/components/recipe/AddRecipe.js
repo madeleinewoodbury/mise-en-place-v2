@@ -2,8 +2,9 @@ import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { createRecipe } from '../../actions/recipes';
 
-const AddRecipe = props => {
+const AddRecipe = ({ createRecipe, history }) => {
   const [formData, setFormData] = useState({
     category: '',
     name: '',
@@ -18,7 +19,7 @@ const AddRecipe = props => {
   const handleSubmit = e => {
     e.preventDefault();
     console.log(formData);
-    // createProfile(formData, history);
+    createRecipe(formData, history);
   };
 
   const { category, name, description, ingredients, instructions } = formData;
@@ -99,6 +100,11 @@ const AddRecipe = props => {
   );
 };
 
-AddRecipe.propTypes = {};
+AddRecipe.propTypes = {
+  createRecipe: PropTypes.func.isRequired
+};
 
-export default AddRecipe;
+export default connect(
+  null,
+  { createRecipe }
+)(withRouter(AddRecipe));

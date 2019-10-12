@@ -6,6 +6,7 @@ import {
   CLEAR_RECIPE
 } from './types';
 import axios from 'axios';
+import { setAlert } from './alert';
 
 // Get current user's recipes
 export const getUserRecipes = () => async dispatch => {
@@ -38,6 +39,42 @@ export const getRecipes = () => async dispatch => {
       payload: res.data
     });
   } catch (err) {
+    dispatch({
+      type: RECIPE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Create or update recipe
+export const createRecipe = (
+  formData,
+  history,
+  edit = false
+) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    const res = await axios.post('/api/recipes', formData, config);
+
+    dispatch({
+      type: GET_RECIPE,
+      payload: res.data
+    });
+    dispatch(setAlert(edit ? 'Recipe Updated' : 'Recipe Created'));
+    // Redirect if edit is false
+    if (!edit) {
+      history.push('/dashboard');
+    }
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+    }
     dispatch({
       type: RECIPE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
