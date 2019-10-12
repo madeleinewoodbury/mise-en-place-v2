@@ -29,9 +29,12 @@ const Recipe = ({
             </Link>
             {auth.isAuthenticated &&
               !auth.loading &&
-              auth.user._id === recipe.user && (
-                <Link to="/edit-profile" className="btn btn-dark">
-                  Edit Profile
+              auth.user._id === recipe.user._id && (
+                <Link
+                  to={`/edit-recipe/${recipe._id}`}
+                  className="btn btn-dark"
+                >
+                  Edit Recipe
                 </Link>
               )}
             <div className="recipe-grid my-1">
