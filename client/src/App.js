@@ -19,7 +19,7 @@ import Recipe from './components/recipe/Recipe';
 import Recipes from './components/recipes/Recipes';
 import Profiles from './components/profile/Profiles';
 import Profile from './components/profile/Profile';
-import FileUpload from './components/test/FileUpload';
+import EditAvatar from './components/dashboard/EditAvatar';
 import './App.css';
 
 if (localStorage.token) {
@@ -41,7 +41,6 @@ const App = () => {
           <Switch>
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
-            <Route exact path="/upload" component={FileUpload} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
             <PrivateRoute
               exact
@@ -53,6 +52,7 @@ const App = () => {
             <PrivateRoute exact path="/recipes" component={Recipes} />
             <PrivateRoute exact path="/profiles" component={Profiles} />
             <PrivateRoute exact path="/profile/:id" component={Profile} />
+            <PrivateRoute exact path="/upload" component={EditAvatar} />
           </Switch>
         </section>
       </Fragment>

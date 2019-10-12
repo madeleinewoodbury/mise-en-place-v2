@@ -1,10 +1,10 @@
 const express = require('express');
 const auth = require('../../middleware/auth');
-const { check, validationResult } = require('express-validator');
 const fileUpload = require('express-fileupload');
 const cloudinary = require('cloudinary').v2;
 const config = require('config');
 const User = require('../../models/User');
+const Recipes = require('../../models/Recipe');
 
 const router = express.Router();
 

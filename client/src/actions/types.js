@@ -16,3 +16,4 @@ export const GET_RECIPE = 'GET_RECIPE';
 export const RECIPE_ERROR = 'RECIPE_ERROR';
 export const RECIPES_SEARCH = 'RECIPES_SEARCH';
 export const CLEAR_RECIPE = 'CLEAR_RECIPE';
+export const EDIT_AVATAR = 'EDIT_AVATAR';

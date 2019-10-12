@@ -1,38 +1,24 @@
 import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { editAvatar } from '../../actions/profile';
+import PropTypes from 'prop-types';
 
-const FileUpload = () => {
+const EditAvatar = ({ editAvatar, history }) => {
   const [file, setFile] = useState('');
   const [fileName, setFileName] = useState('No file selected');
-  const [uploadedFile, setUploadedFile] = useState({});
+  // const [uploadedFile, setUploadedFile] = useState({});
 
   const handleChange = e => {
     setFile(e.target.files[0]);
     setFileName(e.target.files[0].name);
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('file', file);
-
-    try {
-      const res = await axios.post('/api/upload/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-
-      // const { fileName, filePath } = res.data;
-      // setUploadedFile({ fileName, filePath });
-    } catch (err) {
-      if (err.response.status === 500) {
-        console.log('There was a problem with the server');
-      } else {
-        console.log(err.response.data.msg);
-      }
-    }
+    editAvatar(formData, history);
   };
 
   return (
@@ -63,4 +49,11 @@ const FileUpload = () => {
   );
 };
 
-export default FileUpload;
+EditAvatar.propTypes = {
+  editAvatar: PropTypes.func.isRequired
+};
+
+export default connect(
+  null,
+  { editAvatar }
+)(withRouter(EditAvatar));

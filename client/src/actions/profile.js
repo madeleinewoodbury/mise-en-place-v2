@@ -2,7 +2,8 @@ import {
   GET_PROFILE,
   GET_PROFILES,
   PROFILE_ERROR,
-  CLEAR_PROFILE
+  CLEAR_PROFILE,
+  EDIT_AVATAR
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alert';
@@ -93,6 +94,28 @@ export const createProfile = (
     if (errors) {
       errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
     }
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Update user avatar
+export const editAvatar = (formData, history) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    };
+    const res = await axios.post('/api/upload/', formData, config);
+    dispatch({
+      type: EDIT_AVATAR
+    });
+    dispatch(setAlert('Avatar Updated', 'success'));
+    history.push('/dashboard');
+  } catch (err) {
     dispatch({
       type: PROFILE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
