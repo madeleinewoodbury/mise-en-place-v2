@@ -30,14 +30,14 @@ router.post('/', auth, async (req, res) => {
 
   const file = req.files.file;
   if (!file.name.match(/\.(jpg|jpeg|png|gif)$/i)) {
-    return res.json({ msg: 'Invalid Format' });
+    return res.status(400).json({ msg: 'Invalid Format' });
   }
   if (file.size > 1000000) {
-    return res.json({ msg: 'Image is too large' });
+    return res.status(400).json({ msg: 'Image is too large' });
   }
   const result = await cloudinary.uploader.upload(file.tempFilePath);
   if (!result) {
-    return res.status(400).json({ msg: 'Something wen wrong' });
+    return res.status(400).json({ msg: 'Something went wrong' });
   }
 
   try {

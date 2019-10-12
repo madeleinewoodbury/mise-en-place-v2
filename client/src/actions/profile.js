@@ -109,13 +109,14 @@ export const editAvatar = (formData, history) => async dispatch => {
         'Content-Type': 'multipart/form-data'
       }
     };
-    const res = await axios.post('/api/upload/', formData, config);
+    await axios.post('/api/upload/', formData, config);
     dispatch({
       type: EDIT_AVATAR
     });
     dispatch(setAlert('Avatar Updated', 'success'));
     history.push('/dashboard');
   } catch (err) {
+    dispatch(setAlert(err.response.data.msg, 'danger'));
     dispatch({
       type: PROFILE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
