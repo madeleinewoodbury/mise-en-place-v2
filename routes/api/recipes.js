@@ -55,6 +55,73 @@ router.post(
   }
 );
 
+// @route   PUT /api/recipes/:id
+// @desc    Update a recipe
+// @acess   Private
+router.put(
+  '/:id',
+  [
+    auth,
+    [
+      check('name', 'Recipe name is required')
+        .not()
+        .isEmpty(),
+      check('description', 'Description is required')
+        .not()
+        .isEmpty(),
+      check('ingredients', 'Ingredients are required')
+        .not()
+        .isEmpty(),
+      check('instructions', 'Instructions are required')
+        .not()
+        .isEmpty(),
+      check('category', 'Category is required')
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { name, description, category, ingredients, instructions } = req.body;
+    const recipeFields = {};
+    if (name) recipeFields.name = name;
+    if (description) recipeFields.description = description;
+    if (category) recipeFields.category = category;
+    if (ingredients) recipeFields.ingredients = ingredients;
+    if (instructions) recipeFields.instructions = instructions;
+
+    try {
+      let recipe = await Recipe.findById(req.params.id).populate('user', [
+        'name',
+        'avatar'
+      ]);
+      if (!recipe) {
+        res.status(400).json({ msg: 'Recipe not found' });
+      }
+
+      // Check user
+      if (recipe.user._id.toString() !== req.user.id) {
+        return res.status(401).json({ msg: 'Not authorized' });
+      }
+
+      // Update the new recipe
+      recipe = await Recipe.findByIdAndUpdate(
+        { _id: req.params.id },
+        { $set: recipeFields },
+        { new: true }
+      );
+      return res.json(recipe);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
 // @route   GET /api/recipes
 // @desc    Get all recipes
 // @acess   Private
