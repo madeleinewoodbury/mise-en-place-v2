@@ -103,7 +103,7 @@ router.post(
       let profile = await Profile.findOne({ user: req.user.id });
 
       if (profile) {
-        // Updtae profile
+        // Update profile
         profile = await Profile.findOneAndUpdate(
           { user: req.user.id },
           { $set: profileFields },

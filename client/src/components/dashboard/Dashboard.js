@@ -37,13 +37,16 @@ const Dashboard = ({
     <Spinner />
   ) : (
     <div className="dashboard">
-      <h1 className="large text-primary">Dashboard</h1>
-      <p className="lead">
-        <i className="fas fa-user"></i> Welcome {user && user.name}
-      </p>
       {profile !== null ? (
         <Fragment>
-          <DashboardActions />
+          <div className="dash-top my-1 p-1">
+            <h1 className="large text-white">Welcome {user && user.name}</h1>
+            <div className="img-container">
+              <img className="dash-img" src={user.avatar} alt="avatar" />
+            </div>
+            <DashboardActions />
+          </div>
+
           <div className="recipes-title my-1">
             <h2 className="text-primary">My Recipes</h2>
             <form className="search-form" onSubmit={e => handleSubmit(e)}>

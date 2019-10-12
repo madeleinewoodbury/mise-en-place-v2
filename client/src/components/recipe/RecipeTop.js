@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 
-const RecipeTop = ({
-  recipe: { name, description, likes, avatar, author, date }
-}) => {
+const RecipeTop = ({ recipe: { name, description, likes, user, date } }) => {
   return (
     <div className="recipe-info bg-primary p-2">
       <div className="description">
@@ -20,11 +18,11 @@ const RecipeTop = ({
       </div>
       <div className="info-container text-center">
         <div>
-          <img className="recipe-img" src={avatar} alt="avatar" />
+          <img className="recipe-img" src={user.avatar} alt="avatar" />
         </div>
 
         <div>
-          <h3>{author}</h3>
+          <h3>{user.name}</h3>
           <p className="small-text text-white">
             Posted: <Moment format="MM/DD/YYYY">{date}</Moment>
           </p>

@@ -37,16 +37,12 @@ router.post(
     }
 
     try {
-      const user = await User.findById(req.user.id).select('-password');
-
       const newRecipe = new Recipe({
         ingredients: req.body.ingredients.split(',').map(item => item.trim()),
         instructions: req.body.instructions,
         description: req.body.description,
         name: req.body.name,
         category: req.body.category,
-        author: user.name,
-        avatar: user.avatar,
         user: req.user.id
       });
 
@@ -64,7 +60,9 @@ router.post(
 // @acess   Private
 router.get('/', auth, async (req, res) => {
   try {
-    const recipes = await Recipe.find().sort({ date: -1 });
+    const recipes = await Recipe.find()
+      .sort({ date: -1 })
+      .populate('user', ['name', 'avatar']);
     if (!recipes) {
       return res.status(400).json({ msg: 'No recipes found' });
     }
@@ -82,13 +80,15 @@ router.get('/', auth, async (req, res) => {
 router.get('/me', auth, async (req, res) => {
   let recipes = [];
   try {
-    const result = await Recipe.find().sort({ date: -1 });
+    const result = await Recipe.find()
+      .sort({ date: -1 })
+      .populate('user', ['name', 'avatar']);
     if (!result) {
       return res.status(400).json({ msg: 'No recipes found' });
     }
 
     for (recipe of result) {
-      if (recipe.user.toString() === req.user.id) {
+      if (recipe.user._id.toString() === req.user.id) {
         recipes.push(recipe);
       }
     }
@@ -109,7 +109,10 @@ router.get('/me', auth, async (req, res) => {
 // @acess   Private
 router.get('/:id', auth, async (req, res) => {
   try {
-    const recipe = await Recipe.findById(req.params.id);
+    const recipe = await Recipe.findById(req.params.id).populate('user', [
+      'name',
+      'avatar'
+    ]);
     if (!recipe) {
       res.status(400).json({ msg: 'Recipe not found' });
     }
@@ -129,13 +132,15 @@ router.get('/:id', auth, async (req, res) => {
 router.get('/user/:user_id', auth, async (req, res) => {
   let recipes = [];
   try {
-    const result = await Recipe.find().sort({ date: -1 });
+    const result = await Recipe.find()
+      .sort({ date: -1 })
+      .populate('user', ['name', 'avatar']);
     if (!result) {
       res.status(400).json({ msg: 'Recipes not found' });
     }
 
     for (recipe of result) {
-      if (recipe.user.toString() === req.params.user_id) {
+      if (recipe.user._id.toString() === req.params.user_id) {
         recipes.push(recipe);
       }
     }
