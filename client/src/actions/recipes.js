@@ -46,12 +46,8 @@ export const getRecipes = () => async dispatch => {
   }
 };
 
-// Create or update recipe
-export const createRecipe = (
-  formData,
-  history,
-  edit = false
-) => async dispatch => {
+// Create a new recipe
+export const createRecipe = (formData, history) => async dispatch => {
   try {
     const config = {
       headers: {
@@ -64,11 +60,38 @@ export const createRecipe = (
       type: GET_RECIPE,
       payload: res.data
     });
-    dispatch(setAlert(edit ? 'Recipe Updated' : 'Recipe Created'));
-    // Redirect if edit is false
-    if (!edit) {
-      history.push('/dashboard');
+    dispatch(setAlert('Recipe Created', 'success'));
+    history.push('/dashboard');
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
     }
+    dispatch({
+      type: RECIPE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Update a recipe
+export const updateRecipe = (recipeId, formData, history) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    const res = await axios.put(`/api/recipes/${recipeId}`, formData, config);
+
+    dispatch({
+      type: GET_RECIPE,
+      payload: res.data
+    });
+    dispatch(setAlert('Recipe Updated', 'success'));
+    // Redirect back to recipe
+    history.push(`/recipe/${recipeId}`);
   } catch (err) {
     const errors = err.response.data.errors;
 

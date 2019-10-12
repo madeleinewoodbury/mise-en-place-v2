@@ -1,10 +1,16 @@
 import React, { useEffect, useState, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getRecipeById } from '../../actions/recipes';
+import { getRecipeById, updateRecipe } from '../../actions/recipes';
 
-const EditRecipe = ({ getRecipeById, recipes: { recipe, loading }, match }) => {
+const EditRecipe = ({
+  getRecipeById,
+  updateRecipe,
+  recipes: { recipe, loading },
+  history,
+  match
+}) => {
   const [formData, setFormData] = useState({
     category: '',
     name: '',
@@ -33,15 +39,14 @@ const EditRecipe = ({ getRecipeById, recipes: { recipe, loading }, match }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(formData);
-    // createRecipe(formData, history);
+    updateRecipe(match.params.id, formData, history);
   };
 
   const { category, name, description, ingredients, instructions } = formData;
 
   return (
     <Fragment>
-      <h1 className="large text-primary">Add a New Recipe</h1>
+      <h1 className="large text-primary">Edit Recipe</h1>
       <small>* = required field</small>
       <form className="form" onSubmit={e => handleSubmit(e)}>
         <div className="form-group">
@@ -114,6 +119,7 @@ const EditRecipe = ({ getRecipeById, recipes: { recipe, loading }, match }) => {
 
 EditRecipe.propTypes = {
   getRecipeById: PropTypes.func.isRequired,
+  updateRecipe: PropTypes.func.isRequired,
   recipes: PropTypes.object.isRequired
 };
 
@@ -123,5 +129,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getRecipeById }
-)(EditRecipe);
+  { getRecipeById, updateRecipe }
+)(withRouter(EditRecipe));

@@ -82,7 +82,7 @@ export const createProfile = (
       type: GET_PROFILE,
       payload: res.data
     });
-    dispatch(setAlert(edit ? 'Profile Updated' : 'Profile Created'));
+    dispatch(setAlert(edit ? 'Profile Updated' : 'Profile Created', 'success'));
     // Redirect if edit is false
     if (!edit) {
       history.push('/dashboard');
@@ -112,7 +112,7 @@ export const editAvatar = (formData, history) => async dispatch => {
     dispatch({
       type: CLEAR_PROFILE
     });
-    dispatch(setAlert('Avatar Updated'));
+    dispatch(setAlert('Avatar Updated', 'success'));
     history.push('/dashboard');
   } catch (err) {
     dispatch(setAlert(err.response.data.msg, 'danger'));

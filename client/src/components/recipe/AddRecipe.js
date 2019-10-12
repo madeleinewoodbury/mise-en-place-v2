@@ -26,10 +26,6 @@ const AddRecipe = ({ createRecipe, history }) => {
   return (
     <Fragment>
       <h1 className="large text-primary">Add a New Recipe</h1>
-      {/* <p className="lead">
-        <i className="fas fa-user"></i> Let's get some information to make your
-        profile stand out
-      </p> */}
       <small>* = required field</small>
       <form className="form" onSubmit={e => handleSubmit(e)}>
         <div className="form-group">
