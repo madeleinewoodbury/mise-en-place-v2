@@ -1,18 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+import { connect } from 'react-redux';
+import { addLike, removeLike } from '../../actions/recipes';
 
-const RecipeTop = ({ recipe: { name, description, likes, user, date } }) => {
+const RecipeTop = ({
+  addLike,
+  removeLike,
+  recipe: { _id, name, description, likes, user, date }
+}) => {
   return (
     <div className="recipe-info bg-primary p-2">
       <div className="description">
         <h1 className="large text-white">{name}</h1>
         <p>{description}</p>
-        <button type="button" className="btn btn-light">
+        <button
+          onClick={e => addLike(_id)}
+          type="button"
+          className="btn btn-light"
+        >
           <i className="fas fa-thumbs-up"></i>{' '}
           <span>{likes.length > 0 ? likes.length : null}</span>
         </button>
-        <button type="button" className="btn btn-light">
+        <button
+          onClick={e => removeLike(_id)}
+          type="button"
+          className="btn btn-light"
+        >
           <i className="fas fa-thumbs-down"></i>
         </button>
       </div>
@@ -33,7 +47,12 @@ const RecipeTop = ({ recipe: { name, description, likes, user, date } }) => {
 };
 
 RecipeTop.propTypes = {
-  recipe: PropTypes.object.isRequired
+  recipe: PropTypes.object.isRequired,
+  addLike: PropTypes.func.isRequired,
+  removeLike: PropTypes.func.isRequired
 };
 
-export default RecipeTop;
+export default connect(
+  null,
+  { addLike, removeLike }
+)(RecipeTop);

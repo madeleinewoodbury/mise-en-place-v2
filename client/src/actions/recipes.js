@@ -3,7 +3,8 @@ import {
   GET_RECIPE,
   RECIPE_ERROR,
   RECIPES_SEARCH,
-  CLEAR_RECIPE
+  CLEAR_RECIPE,
+  UPDATE_LIKES
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alert';
@@ -98,6 +99,38 @@ export const updateRecipe = (recipeId, formData, history) => async dispatch => {
     if (errors) {
       errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
     }
+    dispatch({
+      type: RECIPE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Add like to recipe
+export const addLike = recipeId => async dispatch => {
+  try {
+    const res = await axios.put(`/api/recipes/like/${recipeId}`);
+    dispatch({
+      type: UPDATE_LIKES,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: RECIPE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Remove like from recipe
+export const removeLike = recipeId => async dispatch => {
+  try {
+    const res = await axios.put(`/api/recipes/unlike/${recipeId}`);
+    dispatch({
+      type: UPDATE_LIKES,
+      payload: res.data
+    });
+  } catch (err) {
     dispatch({
       type: RECIPE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }

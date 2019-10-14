@@ -39,7 +39,7 @@ const Dashboard = ({
     <div className="dashboard">
       {profile !== null ? (
         <Fragment>
-          <div className="dash-top my-1 p-1">
+          <div className="dash-top my-1 p-1 bg-primary">
             <h1 className="large text-white">
               Welcome {user && user.name.trim().split(' ')[0]}
             </h1>

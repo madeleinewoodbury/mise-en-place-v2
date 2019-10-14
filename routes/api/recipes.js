@@ -91,7 +91,10 @@ router.put(
     if (name) recipeFields.name = name;
     if (description) recipeFields.description = description;
     if (category) recipeFields.category = category;
-    if (ingredients) recipeFields.ingredients = ingredients;
+    if (ingredients)
+      recipeFields.ingredients = ingredients
+        .split(',')
+        .map(item => item.trim());
     if (instructions) recipeFields.instructions = instructions;
 
     try {
@@ -251,7 +254,10 @@ router.delete('/:id', auth, async (req, res) => {
 // @acess   Private
 router.put('/like/:id', auth, async (req, res) => {
   try {
-    const recipe = await Recipe.findById(req.params.id);
+    const recipe = await Recipe.findById(req.params.id).populate('user', [
+      'name',
+      'avatar'
+    ]);
     if (!recipe) {
       res.status(400).json({ msg: 'Recipe not found' });
     }
@@ -267,7 +273,7 @@ router.put('/like/:id', auth, async (req, res) => {
     // Add like to recipe
     recipe.likes.unshift({ user: req.user.id });
     await recipe.save();
-    res.json(recipe.likes);
+    res.json(recipe);
   } catch (err) {
     if (err.kind == 'ObjectId') {
       return res.status(400).json({ msg: 'Recipe not found' });
@@ -281,7 +287,10 @@ router.put('/like/:id', auth, async (req, res) => {
 // @acess   Private
 router.put('/unlike/:id', auth, async (req, res) => {
   try {
-    const recipe = await Recipe.findById(req.params.id);
+    const recipe = await Recipe.findById(req.params.id).populate('user', [
+      'name',
+      'avatar'
+    ]);
     if (!recipe) {
       res.status(400).json({ msg: 'Recipe not found' });
     }
@@ -302,7 +311,7 @@ router.put('/unlike/:id', auth, async (req, res) => {
     // Remove like
     recipe.likes.splice(removeIndex, 1);
     await recipe.save();
-    res.json(recipe.likes);
+    res.json(recipe);
   } catch (err) {
     if (err.kind == 'ObjectId') {
       return res.status(400).json({ msg: 'Recipe not found' });

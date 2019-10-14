@@ -3,7 +3,8 @@ import {
   GET_RECIPE,
   RECIPE_ERROR,
   RECIPES_SEARCH,
-  CLEAR_RECIPE
+  CLEAR_RECIPE,
+  UPDATE_LIKES
 } from '../actions/types';
 
 const initialState = {
@@ -24,6 +25,7 @@ export default function(state = initialState, action) {
         loading: false
       };
     case GET_RECIPE:
+    case UPDATE_LIKES:
       return {
         ...state,
         recipe: payload,

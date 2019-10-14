@@ -384,7 +384,10 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--success-color);
+}
+
+.dash-buttons a {
+  margin: 0 0.5rem;
 }
 
 .search-form,
@@ -465,7 +468,8 @@ button {
   margin-right: 0.5rem;
 }
 
-.profiles-img {
+.profiles-img,
+.recipe-img {
   width: 150px;
   max-height: 150px;
   object-fit: cover;
@@ -570,8 +574,6 @@ button {
 }
 
 .recipe-grid .recipe-info .info-container .recipe-img {
-  width: 100px;
-  height: auto;
   border-radius: 50%;
   margin-right: 0.5rem;
 }
