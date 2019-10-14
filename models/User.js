@@ -20,6 +20,9 @@ const UserSchema = new Schema({
     default:
       'http://www.gravatar.com/avatar/b2b146dba9e0023cb56637f0df4aa005?s=200&r=pg&d=mp'
   },
+  starred: {
+    type: [String]
+  },
   date: {
     type: Date,
     default: Date.now

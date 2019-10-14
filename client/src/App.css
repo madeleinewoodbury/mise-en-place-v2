@@ -203,6 +203,10 @@ ul {
   border: #ccc solid 1px;
 }
 
+.btn-star {
+  color: rgb(250, 228, 31);
+}
+
 .btn:hover {
   opacity: 0.8;
 }

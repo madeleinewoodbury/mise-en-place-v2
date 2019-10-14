@@ -29,6 +29,9 @@ const RecipeTop = ({
         >
           <i className="fas fa-thumbs-down"></i>
         </button>
+        <button type="button" className="btn btn-dark">
+          <i class="fas fa-star"></i>
+        </button>
       </div>
       <div className="info-container text-center">
         <div>

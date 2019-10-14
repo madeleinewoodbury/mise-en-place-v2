@@ -320,4 +320,34 @@ router.put('/unlike/:id', auth, async (req, res) => {
   }
 });
 
+// @route   PUT /api/recipes/star/:id
+// @desc    Star a recipe
+// @acess   Private
+router.put('/star/:id', auth, async (req, res) => {
+  try {
+    let user = await User.findById(req.user.id);
+
+    const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) {
+      res.status(400).json({ msg: 'Recipe not found' });
+    }
+
+    // Check id recipe has already been starred by user
+    if (
+      user.starred.filter(star => star === recipe._id.toString()).length > 0
+    ) {
+      return res.status(400).json({ msg: 'Recipe has already been starred' });
+    }
+
+    // Add recipe to starred array
+    user.starred.unshift(recipe.id);
+    await user.save();
+    res.json(user);
+  } catch (err) {
+    if (err.kind == 'ObjectId') {
+      return res.status(400).json({ msg: 'Recipe not found' });
+    }
+    res.status(500).send('Server Error');
+  }
+});
 module.exports = router;
