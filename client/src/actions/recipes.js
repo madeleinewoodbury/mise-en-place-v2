@@ -4,7 +4,8 @@ import {
   RECIPE_ERROR,
   RECIPES_SEARCH,
   CLEAR_RECIPE,
-  UPDATE_LIKES
+  UPDATE_LIKES,
+  REMOVE_RECIPE
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alert';
@@ -202,5 +203,26 @@ export const searchRecipes = name => async dispatch => {
       type: RECIPE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
+  }
+};
+
+// Delete recipe
+export const deleteRecipe = (id, history) => async dispatch => {
+  if (window.confirm('Are you sure? This can NOT be undone!')) {
+    try {
+      const res = await axios.delete(`/api/recipes/${id}`);
+
+      dispatch({
+        type: REMOVE_RECIPE
+      });
+      dispatch(setAlert('Recipe deleted', 'success'));
+      // Redirect back to dashboard
+      history.push('/');
+    } catch (err) {
+      dispatch({
+        type: RECIPE_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status }
+      });
+    }
   }
 };

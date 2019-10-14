@@ -4,14 +4,16 @@ import Spinner from '../layout/Spinner';
 import RecipeTop from './RecipeTop';
 import RecipeInstructions from './RecipeInstructions';
 import { connect } from 'react-redux';
-import { getRecipeById } from '../../actions/recipes';
+import { getRecipeById, deleteRecipe } from '../../actions/recipes';
 import PropTypes from 'prop-types';
 
 const Recipe = ({
   getRecipeById,
+  deleteRecipe,
   recipes: { recipe, loading },
   auth,
-  match
+  match,
+  history
 }) => {
   useEffect(() => {
     getRecipeById(match.params.id);
@@ -24,18 +26,26 @@ const Recipe = ({
       ) : (
         <Fragment>
           <div className="recipe">
-            <Link to="/" className="btn btn-light">
-              Go Back
-            </Link>
+            <button onClick={e => history.goBack()} className="btn btn-light">
+              <i className="fas fa-arrow-left"></i> Go Back
+            </button>
             {auth.isAuthenticated &&
               !auth.loading &&
               auth.user._id === recipe.user._id && (
-                <Link
-                  to={`/edit-recipe/${recipe._id}`}
-                  className="btn btn-dark"
-                >
-                  Edit Recipe
-                </Link>
+                <Fragment>
+                  <Link
+                    to={`/edit-recipe/${recipe._id}`}
+                    className="btn btn-success"
+                  >
+                    <i className="fas fa-edit"></i> Edit Recipe
+                  </Link>
+                  <button
+                    onClick={e => deleteRecipe(recipe._id, history)}
+                    className="btn btn-danger"
+                  >
+                    <i className="fas fa-trash-alt"></i> Delete Recipe
+                  </button>
+                </Fragment>
               )}
             <div className="recipe-grid my-1">
               <RecipeTop recipe={recipe} />
@@ -50,6 +60,7 @@ const Recipe = ({
 
 Recipe.propTypes = {
   getRecipeById: PropTypes.func.isRequired,
+  deleteRecipe: PropTypes.func.isRequired,
   recipes: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -61,5 +72,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getRecipeById }
+  { getRecipeById, deleteRecipe }
 )(Recipe);

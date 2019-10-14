@@ -4,7 +4,8 @@ import {
   RECIPE_ERROR,
   RECIPES_SEARCH,
   CLEAR_RECIPE,
-  UPDATE_LIKES
+  UPDATE_LIKES,
+  REMOVE_RECIPE
 } from '../actions/types';
 
 const initialState = {
@@ -32,6 +33,7 @@ export default function(state = initialState, action) {
         loading: false
       };
     case CLEAR_RECIPE:
+    case REMOVE_RECIPE:
       return {
         ...state,
         recipes: [],
