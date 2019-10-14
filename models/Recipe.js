@@ -26,6 +26,9 @@ const RecipeSchema = new Schema({
     type: String,
     required: true
   },
+  starred: {
+    type: [String]
+  },
   likes: [
     {
       user: {

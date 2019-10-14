@@ -48,7 +48,7 @@ const Recipe = ({
                 </Fragment>
               )}
             <div className="recipe-grid my-1">
-              <RecipeTop recipe={recipe} />
+              <RecipeTop recipe={recipe} loggedInUser={auth.user._id} />
               <RecipeInstructions recipe={recipe} />
             </div>
           </div>

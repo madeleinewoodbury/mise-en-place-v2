@@ -17,4 +17,5 @@ export const RECIPE_ERROR = 'RECIPE_ERROR';
 export const RECIPES_SEARCH = 'RECIPES_SEARCH';
 export const CLEAR_RECIPE = 'CLEAR_RECIPE';
 export const UPDATE_LIKES = 'UPDATE_LIKES';
+export const UPDATE_STARS = 'UPDATE_STARS';
 export const REMOVE_RECIPE = 'REMOVE_RECIPE';

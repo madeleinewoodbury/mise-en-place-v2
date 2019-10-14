@@ -5,6 +5,7 @@ import {
   RECIPES_SEARCH,
   CLEAR_RECIPE,
   UPDATE_LIKES,
+  UPDATE_STARS,
   REMOVE_RECIPE
 } from './types';
 import axios from 'axios';
@@ -129,6 +130,22 @@ export const removeLike = recipeId => async dispatch => {
     const res = await axios.put(`/api/recipes/unlike/${recipeId}`);
     dispatch({
       type: UPDATE_LIKES,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: RECIPE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Star recipe
+export const starRecipe = recipeId => async dispatch => {
+  try {
+    const res = await axios.put(`/api/recipes/star/${recipeId}`);
+    dispatch({
+      type: UPDATE_STARS,
       payload: res.data
     });
   } catch (err) {

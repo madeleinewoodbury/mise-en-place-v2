@@ -2,12 +2,14 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
-import { addLike, removeLike } from '../../actions/recipes';
+import { addLike, removeLike, starRecipe } from '../../actions/recipes';
 
 const RecipeTop = ({
   addLike,
   removeLike,
-  recipe: { _id, name, description, likes, user, date }
+  starRecipe,
+  loggedInUser,
+  recipe: { _id, name, description, starred, likes, user, date }
 }) => {
   return (
     <div className="recipe-info bg-primary p-2">
@@ -29,7 +31,15 @@ const RecipeTop = ({
         >
           <i className="fas fa-thumbs-down"></i>
         </button>
-        <button type="button" className="btn btn-dark">
+        <button
+          onClick={e => starRecipe(_id)}
+          type="button"
+          className={
+            starred.includes(loggedInUser)
+              ? 'btn btn-dark btn-star'
+              : 'btn btn-dark'
+          }
+        >
           <i class="fas fa-star"></i>
         </button>
       </div>
@@ -52,10 +62,12 @@ const RecipeTop = ({
 RecipeTop.propTypes = {
   recipe: PropTypes.object.isRequired,
   addLike: PropTypes.func.isRequired,
+  starRecipe: PropTypes.func.isRequired,
+  loggedInUser: PropTypes.string.isRequired,
   removeLike: PropTypes.func.isRequired
 };
 
 export default connect(
   null,
-  { addLike, removeLike }
+  { addLike, removeLike, starRecipe }
 )(RecipeTop);

@@ -5,6 +5,7 @@ import {
   RECIPES_SEARCH,
   CLEAR_RECIPE,
   UPDATE_LIKES,
+  UPDATE_STARS,
   REMOVE_RECIPE
 } from '../actions/types';
 
@@ -27,6 +28,7 @@ export default function(state = initialState, action) {
       };
     case GET_RECIPE:
     case UPDATE_LIKES:
+    case UPDATE_STARS:
       return {
         ...state,
         recipe: payload,
