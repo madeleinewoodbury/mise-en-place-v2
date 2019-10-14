@@ -350,4 +350,38 @@ router.put('/star/:id', auth, async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+
+// @route   PUT /api/recipes/unstar/:id
+// @desc    Remove star from recipe
+// @acess   Private
+router.put('/unstar/:id', auth, async (req, res) => {
+  try {
+    let user = await User.findById(req.user.id);
+
+    const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) {
+      res.status(400).json({ msg: 'Recipe not found' });
+    }
+
+    // Check if recipe has been starred by user
+    if (
+      user.starred.filter(star => star === recipe._id.toString()).length === 0
+    ) {
+      return res.status(400).json({ msg: 'Recipe has not yet been starred' });
+    }
+
+    // Get remove index
+    const removeIndex = user.starred.indexOf(recipe._id);
+
+    user.starred.splice(removeIndex, 1);
+    await user.save();
+    res.json(user);
+  } catch (err) {
+    if (err.kind == 'ObjectId') {
+      return res.status(400).json({ msg: 'Recipe not found' });
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
