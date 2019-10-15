@@ -356,4 +356,30 @@ router.put('/star/:id', auth, async (req, res) => {
   }
 });
 
+// @route   GET /api/recipes/me/star
+// @desc    Get all of users starred recipes
+// @acess   Private
+router.get('/me/star', auth, async (req, res) => {
+  try {
+    let starredRecipes = [];
+    const recipes = await Recipe.find()
+      .sort({ date: -1 })
+      .populate('user', ['name', 'avatar']);
+    if (!recipes) {
+      return res.status(400).json({ msg: 'No recipes found' });
+    }
+
+    for (recipe of recipes) {
+      if (recipe.starred.includes(req.user.id)) {
+        starredRecipes.unshift(recipe);
+      }
+    }
+
+    res.json(starredRecipes);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;

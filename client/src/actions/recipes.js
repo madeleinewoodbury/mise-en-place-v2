@@ -49,6 +49,25 @@ export const getRecipes = () => async dispatch => {
   }
 };
 
+// Get starred recipes
+export const getStarredRecipes = () => async dispatch => {
+  dispatch({
+    type: CLEAR_RECIPE
+  });
+  try {
+    const res = await axios.get('/api/recipes/me/star');
+    dispatch({
+      type: GET_RECIPES,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: RECIPE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
 // Create a new recipe
 export const createRecipe = (formData, history) => async dispatch => {
   try {

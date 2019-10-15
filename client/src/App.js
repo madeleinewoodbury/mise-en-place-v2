@@ -22,6 +22,7 @@ import Profile from './components/profile/Profile';
 import EditAvatar from './components/dashboard/EditAvatar';
 import AddRecipe from './components/recipe/AddRecipe';
 import EditRecipe from './components/recipe/EditRecipe';
+import StarredRecipes from './components/recipes/StarredRecipes';
 import './App.css';
 
 if (localStorage.token) {
@@ -52,6 +53,7 @@ const App = () => {
             <PrivateRoute exact path="/edit-profile" component={EditProfile} />
             <PrivateRoute exact path="/recipe/:id" component={Recipe} />
             <PrivateRoute exact path="/recipes" component={Recipes} />
+            <PrivateRoute exact path="/favorites" component={StarredRecipes} />
             <PrivateRoute exact path="/profiles" component={Profiles} />
             <PrivateRoute exact path="/profile/:id" component={Profile} />
             <PrivateRoute exact path="/upload" component={EditAvatar} />
