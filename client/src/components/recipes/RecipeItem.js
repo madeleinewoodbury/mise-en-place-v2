@@ -6,9 +6,9 @@ const RecipeItem = ({ recipe: { name, user, description, likes, _id } }) => {
   return (
     <div className="recipe bg-white p-1 my-1">
       <div className="recipe-info">
-        <d3iv className="img-container">
+        <div className="img-container">
           <img className="recipes-img" src={user.avatar} alt="avatar" />
-        </d3iv>
+        </div>
         <div>
           <h3>
             <a href="#" target="_blank" rel="noopener noreferrer">

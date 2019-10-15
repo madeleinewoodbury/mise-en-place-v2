@@ -59,10 +59,8 @@ router.get('/category/:name', auth, async (req, res) => {
       .sort({ date: -1 })
       .populate('user', ['name', 'avatar']);
     if (!result) {
-      res.status(400).json({ msg: 'No recipes found' });
+      res.status(404).json({ msg: 'No recipes found' });
     }
-
-    console.log(searchValue);
 
     if (searchValue === '0') {
       recipes = result;
@@ -75,7 +73,7 @@ router.get('/category/:name', auth, async (req, res) => {
     }
 
     if (recipes.length === 0) {
-      res.status(400).json({ msg: 'No recipes found' });
+      res.status(404).json({ msg: 'No recipes found' });
     }
 
     res.json(recipes);

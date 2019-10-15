@@ -242,6 +242,22 @@ export const searchRecipes = (category, name) => async dispatch => {
   }
 };
 
+// Search for recipes by category
+export const searchCategory = category => async dispatch => {
+  try {
+    const res = await axios.get(`/api/search/category/${category}`);
+    dispatch({
+      type: RECIPES_SEARCH,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: RECIPE_ERROR,
+      payload: { msg: err.response.data.msg, status: err.response.status }
+    });
+  }
+};
+
 // Search for starred recipes by name
 export const searchStarredRecipes = name => async dispatch => {
   try {

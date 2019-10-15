@@ -3,11 +3,16 @@ import PropTypes from 'prop-types';
 import Spinner from '../layout/Spinner';
 import RecipeItem from './RecipeItem';
 import { connect } from 'react-redux';
-import { getRecipes, searchRecipes } from '../../actions/recipes';
+import {
+  getRecipes,
+  searchRecipes,
+  searchCategory
+} from '../../actions/recipes';
 
 const Recipes = ({
   getRecipes,
   searchRecipes,
+  searchCategory,
   recipes: { recipes, loading }
 }) => {
   useEffect(() => {
@@ -22,14 +27,14 @@ const Recipes = ({
     if (search !== '') {
       searchRecipes(category, search);
     } else {
-      getRecipes();
+      searchCategory(category);
     }
     setSearchData('');
   };
 
   return (
     <Fragment>
-      {recipes === null || loading ? (
+      {loading ? (
         <Spinner />
       ) : (
         <Fragment>
@@ -70,7 +75,6 @@ const Recipes = ({
                 </button>
               </form>
             </div>
-
             <div className="recipes-list">
               {recipes.map(recipe => (
                 <RecipeItem key={recipe._id} recipe={recipe} />
@@ -85,6 +89,8 @@ const Recipes = ({
 
 Recipes.propTypes = {
   getRecipes: PropTypes.func.isRequired,
+  searchRecipes: PropTypes.func.isRequired,
+  searchCategory: PropTypes.func.isRequired,
   recipes: PropTypes.array.isRequired
 };
 
@@ -94,5 +100,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getRecipes, searchRecipes }
+  { getRecipes, searchRecipes, searchCategory }
 )(Recipes);
