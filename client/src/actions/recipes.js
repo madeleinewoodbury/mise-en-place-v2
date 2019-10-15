@@ -210,10 +210,26 @@ export const getRecipesByUserId = userId => async dispatch => {
   }
 };
 
-// Search for current user's recipes
-export const searchUserRecipes = name => async dispatch => {
+// Search for current user's recipes by name
+export const searchUserRecipes = (category, name) => async dispatch => {
   try {
-    const res = await axios.get(`/api/search/recipe/me/${name}`);
+    const res = await axios.get(`/api/search/recipe/me/${category}/${name}`);
+    dispatch({
+      type: RECIPES_SEARCH,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: RECIPE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Search for current user's recipes by category
+export const searchUserCategory = category => async dispatch => {
+  try {
+    const res = await axios.get(`/api/search/category/me/${category}`);
     dispatch({
       type: RECIPES_SEARCH,
       payload: res.data

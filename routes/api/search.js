@@ -173,11 +173,12 @@ router.get('/star/:category', auth, async (req, res) => {
   }
 });
 
-// @route   GET /api/search/recipe/me/:name
+// @route   GET /api/search/recipe/me/:category/:name
 // @desc    Search current user's recpie by name
 // @acess   Private
-router.get('/recipe/me/:name', auth, async (req, res) => {
-  let searchValue = req.params.name;
+router.get('/recipe/me/:category/:name', auth, async (req, res) => {
+  let searchCategory = req.params.category;
+  let searchName = req.params.name;
   let recipes = [];
 
   try {
@@ -187,11 +188,58 @@ router.get('/recipe/me/:name', auth, async (req, res) => {
     if (!result) {
       res.status(400).json({ msg: 'No recipes found' });
     }
+
     for (recipe of result) {
-      if (recipe.name.toUpperCase().includes(searchValue.toUpperCase())) {
-        // Check user
-        if (recipe.user.toString() === req.user.id) {
+      if (recipe.user._id.toString() === req.user.id) {
+        if (searchCategory !== '0') {
+          if (
+            recipe.category === searchCategory &&
+            recipe.name.toUpperCase().includes(searchName.toUpperCase())
+          ) {
+            recipes.push(recipe);
+          }
+        } else {
+          if (recipe.name.toUpperCase().includes(searchName.toUpperCase())) {
+            recipes.push(recipe);
+          }
+        }
+      }
+    }
+
+    if (recipes.length === 0) {
+      res.status(400).json({ msg: 'No recipes found' });
+    }
+
+    res.json(recipes);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   GET /api/search/category/me/:category
+// @desc    Search current user's recpie by category
+// @acess   Private
+router.get('/category/me/:category', auth, async (req, res) => {
+  let searchCategory = req.params.category;
+  let recipes = [];
+
+  try {
+    const result = await Recipe.find()
+      .sort({ date: -1 })
+      .populate('user', ['name', 'avatar']);
+    if (!result) {
+      res.status(400).json({ msg: 'No recipes found' });
+    }
+
+    for (recipe of result) {
+      if (recipe.user._id.toString() === req.user.id) {
+        if (searchCategory === '0') {
           recipes.push(recipe);
+        } else {
+          if (recipe.category === searchCategory) {
+            recipes.push(recipe);
+          }
         }
       }
     }

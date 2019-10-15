@@ -3,7 +3,11 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getCurrentProfile } from '../../actions/profile';
-import { getUserRecipes, searchUserRecipes } from '../../actions/recipes';
+import {
+  getUserRecipes,
+  searchUserRecipes,
+  searchUserCategory
+} from '../../actions/recipes';
 import Spinner from '../layout/Spinner';
 import DashboardActions from './DashboardActions';
 import DashboardRecipes from './DashboardRecipes';
@@ -12,6 +16,7 @@ const Dashboard = ({
   getCurrentProfile,
   getUserRecipes,
   searchUserRecipes,
+  searchUserCategory,
   auth: { user },
   profile: { profile, loading },
   recipes: { recipes }
@@ -22,13 +27,14 @@ const Dashboard = ({
   }, []);
 
   const [search, setSearchData] = useState('');
+  const [category, setCategory] = useState('0');
 
   const handleSubmit = e => {
     e.preventDefault();
     if (search !== '') {
-      searchUserRecipes(search);
+      searchUserRecipes(category, search);
     } else {
-      getUserRecipes();
+      searchUserCategory(category);
     }
     setSearchData('');
   };
@@ -56,6 +62,23 @@ const Dashboard = ({
           <div className="recipes-title my-1">
             <h2 className="text-primary">My Recipes</h2>
             <form className="search-form" onSubmit={e => handleSubmit(e)}>
+              <div className="form-group">
+                <select
+                  name="category"
+                  value={category}
+                  onChange={e => setCategory(e.target.value)}
+                >
+                  <option value="0">All Categories</option>
+                  <option value="Breakfast">Breakfast</option>
+                  <option value="Lunch">Lunch</option>
+                  <option value="Dinner">Dinner</option>
+                  <option value="Desserts">Desserts</option>
+                  <option value="Drinks">Drinks</option>
+                  <option value="Sides">Sides</option>
+                  <option value="Breads">Breads</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
               <input
                 type="text"
                 placeholder="Search..."
@@ -97,6 +120,7 @@ Dashboard.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
   getUserRecipes: PropTypes.func.isRequired,
   searchUserRecipes: PropTypes.func.isRequired,
+  searchUserCategory: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
   recipes: PropTypes.object.isRequired
@@ -110,5 +134,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCurrentProfile, getUserRecipes, searchUserRecipes }
+  { getCurrentProfile, getUserRecipes, searchUserRecipes, searchUserCategory }
 )(Dashboard);
