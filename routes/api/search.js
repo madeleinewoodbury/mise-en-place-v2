@@ -22,7 +22,6 @@ router.get('/recipe/:category/:name', auth, async (req, res) => {
     }
 
     for (recipe of result) {
-      console.log(recipe.category);
       if (searchCategory !== '0') {
         if (
           recipe.category === searchCategory &&
@@ -32,6 +31,44 @@ router.get('/recipe/:category/:name', auth, async (req, res) => {
         }
       } else {
         if (recipe.name.toUpperCase().includes(searchName.toUpperCase())) {
+          recipes.push(recipe);
+        }
+      }
+    }
+
+    if (recipes.length === 0) {
+      res.status(400).json({ msg: 'No recipes found' });
+    }
+
+    res.json(recipes);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   GET /api/search/category/:name
+// @desc    Search for a recpies by category
+// @acess   Private
+router.get('/category/:name', auth, async (req, res) => {
+  let searchValue = req.params.name;
+  let recipes = [];
+
+  try {
+    const result = await Recipe.find()
+      .sort({ date: -1 })
+      .populate('user', ['name', 'avatar']);
+    if (!result) {
+      res.status(400).json({ msg: 'No recipes found' });
+    }
+
+    console.log(searchValue);
+
+    if (searchValue === '0') {
+      recipes = result;
+    } else {
+      for (recipe of result) {
+        if (recipe.category === searchValue) {
           recipes.push(recipe);
         }
       }
