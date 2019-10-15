@@ -227,9 +227,9 @@ export const searchUserRecipes = name => async dispatch => {
 };
 
 // Search for recipes by name
-export const searchRecipes = name => async dispatch => {
+export const searchRecipes = (category, name) => async dispatch => {
   try {
-    const res = await axios.get(`/api/search/recipe/${name}`);
+    const res = await axios.get(`/api/search/recipe/${category}/${name}`);
     dispatch({
       type: RECIPES_SEARCH,
       payload: res.data

@@ -15,11 +15,12 @@ const Recipes = ({
   }, [getRecipes]);
 
   const [search, setSearchData] = useState('');
+  const [category, setCategory] = useState('0');
 
   const handleSubmit = e => {
     e.preventDefault();
     if (search !== '') {
-      searchRecipes(search);
+      searchRecipes(category, search);
     } else {
       getRecipes();
     }
@@ -40,6 +41,23 @@ const Recipes = ({
                 Recipe...
               </h2>
               <form className="search-form" onSubmit={e => handleSubmit(e)}>
+                <div className="form-group">
+                  <select
+                    name="category"
+                    value={category}
+                    onChange={e => setCategory(e.target.value)}
+                  >
+                    <option value="0">All Categories</option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+                    <option value="Desserts">Desserts</option>
+                    <option value="Drinks">Drinks</option>
+                    <option value="Sides">Sides</option>
+                    <option value="Breads">Breads</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
                 <input
                   type="text"
                   placeholder="Search..."

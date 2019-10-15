@@ -5,11 +5,12 @@ const { check, validationResult } = require('express-validator');
 const Recipe = require('../../models/Recipe');
 const User = require('../../models/User');
 
-// @route   GET /api/search/recipe/:name
+// @route   GET /api/search/recipe/:category/:name
 // @desc    Search for a recpie by name
 // @acess   Private
-router.get('/recipe/:name', auth, async (req, res) => {
-  let searchValue = req.params.name;
+router.get('/recipe/:category/:name', auth, async (req, res) => {
+  let searchCategory = req.params.category;
+  let searchName = req.params.name;
   let recipes = [];
 
   try {
@@ -19,9 +20,20 @@ router.get('/recipe/:name', auth, async (req, res) => {
     if (!result) {
       res.status(400).json({ msg: 'No recipes found' });
     }
+
     for (recipe of result) {
-      if (recipe.name.toUpperCase().includes(searchValue.toUpperCase())) {
-        recipes.push(recipe);
+      console.log(recipe.category);
+      if (searchCategory !== '0') {
+        if (
+          recipe.category === searchCategory &&
+          recipe.name.toUpperCase().includes(searchName.toUpperCase())
+        ) {
+          recipes.push(recipe);
+        }
+      } else {
+        if (recipe.name.toUpperCase().includes(searchName.toUpperCase())) {
+          recipes.push(recipe);
+        }
       }
     }
 

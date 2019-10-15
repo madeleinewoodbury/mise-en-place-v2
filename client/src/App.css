@@ -394,7 +394,12 @@ button {
   margin: 0 0.5rem;
 }
 
-.search-form,
+.search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .profiles-form {
   display: flex;
 }
@@ -408,6 +413,14 @@ button {
   border: 1px solid #ccc;
   margin-right: 0;
   border-right: none;
+}
+
+.search-form select {
+  display: block;
+  padding: 0.4rem;
+  font-size: 1.2rem;
+  border: 1px solid #ccc;
+  margin-right: 1rem;
 }
 
 .recipes-title {
@@ -570,10 +583,6 @@ button {
   display: flex;
   flex-direction: column;
 }
-
-/* .no-favorites .btn {
-  display: block;
-} */
 
 /* Recipe Page */
 .recipe-grid {
