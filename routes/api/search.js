@@ -13,12 +13,50 @@ router.get('/recipe/:name', auth, async (req, res) => {
   let recipes = [];
 
   try {
-    const result = await Recipe.find().sort({ date: -1 });
+    const result = await Recipe.find()
+      .sort({ date: -1 })
+      .populate('user', ['name', 'avatar']);
     if (!result) {
       res.status(400).json({ msg: 'No recipes found' });
     }
     for (recipe of result) {
       if (recipe.name.toUpperCase().includes(searchValue.toUpperCase())) {
+        recipes.push(recipe);
+      }
+    }
+
+    if (recipes.length === 0) {
+      res.status(400).json({ msg: 'No recipes found' });
+    }
+
+    res.json(recipes);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   GET /api/search/recipe/star/:name
+// @desc    Search for starred recpie by name
+// @acess   Private
+router.get('/recipe/star/:name', auth, async (req, res) => {
+  let searchValue = req.params.name;
+  let recipes = [];
+
+  try {
+    const result = await Recipe.find()
+      .sort({ date: -1 })
+      .populate('user', ['name', 'avatar']);
+
+    if (!result) {
+      res.status(400).json({ msg: 'No recipes found' });
+    }
+
+    for (recipe of result) {
+      if (
+        recipe.name.toUpperCase().includes(searchValue.toUpperCase()) &&
+        recipe.starred.includes(req.user.id)
+      ) {
         recipes.push(recipe);
       }
     }
@@ -42,7 +80,9 @@ router.get('/recipe/me/:name', auth, async (req, res) => {
   let recipes = [];
 
   try {
-    const result = await Recipe.find().sort({ date: -1 });
+    const result = await Recipe.find()
+      .sort({ date: -1 })
+      .populate('user', ['name', 'avatar']);
     if (!result) {
       res.status(400).json({ msg: 'No recipes found' });
     }

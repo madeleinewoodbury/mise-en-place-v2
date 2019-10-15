@@ -242,6 +242,22 @@ export const searchRecipes = name => async dispatch => {
   }
 };
 
+// Search for starred recipes by name
+export const searchStarredRecipes = name => async dispatch => {
+  try {
+    const res = await axios.get(`/api/search/recipe/star/${name}`);
+    dispatch({
+      type: RECIPES_SEARCH,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: RECIPE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
 // Delete recipe
 export const deleteRecipe = (id, history) => async dispatch => {
   if (window.confirm('Are you sure? This can NOT be undone!')) {

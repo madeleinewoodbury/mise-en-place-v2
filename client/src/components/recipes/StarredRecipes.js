@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import RecipeItem from './RecipeItem';
 import Spinner from '../layout/Spinner';
 import { connect } from 'react-redux';
-import { getStarredRecipes } from '../../actions/recipes';
+import { getStarredRecipes, searchStarredRecipes } from '../../actions/recipes';
 
 const StarredRecipes = ({
   getStarredRecipes,
+  searchStarredRecipes,
   recipes: { recipes, loading }
 }) => {
   useEffect(() => {
@@ -18,12 +19,12 @@ const StarredRecipes = ({
   const handleSubmit = e => {
     e.preventDefault();
     console.log(search);
-    // if (search !== '') {
-    //   searchRecipes(search);
-    // } else {
-    //   getRecipes();
-    // }
-    // setSearchData('');
+    if (search !== '') {
+      searchStarredRecipes(search);
+    } else {
+      getStarredRecipes();
+    }
+    setSearchData('');
   };
   return (
     <Fragment>
@@ -88,6 +89,7 @@ const StarredRecipes = ({
 
 StarredRecipes.propTypes = {
   getStarredRecipes: PropTypes.func.isRequired,
+  searchStarredRecipes: PropTypes.func.isRequired,
   recipes: PropTypes.object.isRequired
 };
 
@@ -97,5 +99,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getStarredRecipes }
+  { getStarredRecipes, searchStarredRecipes }
 )(StarredRecipes);
