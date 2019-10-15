@@ -2,7 +2,8 @@ import {
   GET_PROFILE,
   GET_PROFILES,
   PROFILE_ERROR,
-  CLEAR_PROFILE
+  CLEAR_PROFILE,
+  PROFILE_SEARCH
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alert';
@@ -116,6 +117,22 @@ export const editAvatar = (formData, history) => async dispatch => {
     history.push('/dashboard');
   } catch (err) {
     dispatch(setAlert(err.response.data.msg, 'danger'));
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Search for profile by user name
+export const searchProfiles = name => async dispatch => {
+  try {
+    const res = await axios.get(`/api/search/profile/${name}`);
+    dispatch({
+      type: PROFILE_SEARCH,
+      payload: res.data
+    });
+  } catch (err) {
     dispatch({
       type: PROFILE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }

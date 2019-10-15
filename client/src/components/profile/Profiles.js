@@ -1,14 +1,33 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import Spinner from '../layout/Spinner';
 import ProfileItem from './ProfileItem';
 import { connect } from 'react-redux';
-import { getProfiles } from '../../actions/profile';
+import { getProfiles, searchProfiles } from '../../actions/profile';
 import PropTypes from 'prop-types';
 
-const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
+const Profiles = ({
+  getProfiles,
+  searchProfiles,
+  profile: { profiles, loading }
+}) => {
   useEffect(() => {
     getProfiles();
   }, [getProfiles]);
+
+  const [search, setSearch] = useState('');
+
+  const handleChange = e => setSearch(e.target.value);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    if (search === '') {
+      getProfiles();
+    } else {
+      searchProfiles(search);
+    }
+    setSearch('');
+  };
   return (
     <Fragment>
       {profiles.length === 0 || loading ? (
@@ -19,8 +38,14 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
           <p className="lead">
             Browse and connect with fellow Food Enthusiasts
           </p>
-          <form className="profiles-form">
-            <input type="text" placeholder="Search..." name="search" />
+          <form className="profiles-form" onSubmit={e => handleSubmit(e)}>
+            <input
+              type="text"
+              placeholder="Search..."
+              name="search"
+              value={search}
+              onChange={e => handleChange(e)}
+            />
             <button className="search-btn" type="submit">
               <i className="fa fa-search"></i>
             </button>
@@ -38,6 +63,7 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
 
 Profiles.propTypes = {
   getProfiles: PropTypes.func.isRequired,
+  searchProfiles: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired
 };
 
@@ -47,5 +73,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getProfiles }
+  { getProfiles, searchProfiles }
 )(Profiles);

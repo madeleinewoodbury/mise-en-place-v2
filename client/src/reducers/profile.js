@@ -2,6 +2,7 @@ import {
   GET_PROFILE,
   GET_PROFILES,
   PROFILE_ERROR,
+  PROFILE_SEARCH,
   CLEAR_PROFILE
 } from '../actions/types';
 
@@ -22,6 +23,7 @@ export default function(state = initialState, action) {
         loading: false
       };
     case GET_PROFILES:
+    case PROFILE_SEARCH:
       return {
         ...state,
         profiles: payload,
