@@ -48,7 +48,7 @@ router.get('/recipe/:category/:name', auth, async (req, res) => {
 });
 
 // @route   GET /api/search/category/:name
-// @desc    Search for a recpies by category
+// @desc    Search for a recipes by category
 // @acess   Private
 router.get('/category/:name', auth, async (req, res) => {
   let searchValue = req.params.name;
@@ -83,11 +83,12 @@ router.get('/category/:name', auth, async (req, res) => {
   }
 });
 
-// @route   GET /api/search/recipe/star/:name
+// @route   GET /api/search/star/:category/:name
 // @desc    Search for starred recpie by name
 // @acess   Private
-router.get('/recipe/star/:name', auth, async (req, res) => {
-  let searchValue = req.params.name;
+router.get('/star/:category/:name', auth, async (req, res) => {
+  let searchCategory = req.params.category;
+  let searchName = req.params.name;
   let recipes = [];
 
   try {
@@ -100,11 +101,64 @@ router.get('/recipe/star/:name', auth, async (req, res) => {
     }
 
     for (recipe of result) {
-      if (
-        recipe.name.toUpperCase().includes(searchValue.toUpperCase()) &&
-        recipe.starred.includes(req.user.id)
-      ) {
-        recipes.push(recipe);
+      if (searchCategory !== '0') {
+        if (
+          recipe.category === searchCategory &&
+          recipe.name.toUpperCase().includes(searchName.toUpperCase()) &&
+          recipe.starred.includes(req.user.id)
+        ) {
+          recipes.push(recipe);
+        }
+      } else {
+        if (
+          recipe.name.toUpperCase().includes(searchName.toUpperCase()) &&
+          recipe.starred.includes(req.user.id)
+        ) {
+          recipes.push(recipe);
+        }
+      }
+    }
+
+    if (recipes.length === 0) {
+      res.status(400).json({ msg: 'No recipes found' });
+    }
+
+    res.json(recipes);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   GET /api/search/star/:category
+// @desc    Search for starred recpie by category
+// @acess   Private
+router.get('/star/:category', auth, async (req, res) => {
+  let searchValue = req.params.category;
+  let recipes = [];
+
+  console.log(searchValue);
+
+  try {
+    const result = await Recipe.find()
+      .sort({ date: -1 })
+      .populate('user', ['name', 'avatar']);
+
+    if (!result) {
+      res.status(400).json({ msg: 'No recipes found' });
+    }
+    for (recipe of result) {
+      if (searchValue !== '0') {
+        if (
+          recipe.category === searchValue &&
+          recipe.starred.includes(req.user.id)
+        ) {
+          recipes.push(recipe);
+        }
+      } else {
+        if (recipe.starred.includes(req.user.id)) {
+          recipes.push(recipe);
+        }
       }
     }
 

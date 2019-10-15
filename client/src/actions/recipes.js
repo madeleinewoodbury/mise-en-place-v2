@@ -259,9 +259,25 @@ export const searchCategory = category => async dispatch => {
 };
 
 // Search for starred recipes by name
-export const searchStarredRecipes = name => async dispatch => {
+export const searchStarredRecipes = (category, name) => async dispatch => {
   try {
-    const res = await axios.get(`/api/search/recipe/star/${name}`);
+    const res = await axios.get(`/api/search/star/${category}/${name}`);
+    dispatch({
+      type: RECIPES_SEARCH,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: RECIPE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Search for starred recipes by name
+export const searchStarredCategory = category => async dispatch => {
+  try {
+    const res = await axios.get(`/api/search/star/${category}`);
     dispatch({
       type: RECIPES_SEARCH,
       payload: res.data

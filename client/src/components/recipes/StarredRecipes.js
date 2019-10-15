@@ -4,25 +4,31 @@ import PropTypes from 'prop-types';
 import RecipeItem from './RecipeItem';
 import Spinner from '../layout/Spinner';
 import { connect } from 'react-redux';
-import { getStarredRecipes, searchStarredRecipes } from '../../actions/recipes';
+import {
+  getStarredRecipes,
+  searchStarredRecipes,
+  searchStarredCategory
+} from '../../actions/recipes';
 
 const StarredRecipes = ({
   getStarredRecipes,
   searchStarredRecipes,
+  searchStarredCategory,
   recipes: { recipes, loading }
 }) => {
   useEffect(() => {
     getStarredRecipes();
   }, [getStarredRecipes]);
   const [search, setSearchData] = useState('');
+  const [category, setCategory] = useState('0');
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(search);
+
     if (search !== '') {
-      searchStarredRecipes(search);
+      searchStarredRecipes(category, search);
     } else {
-      getStarredRecipes();
+      searchStarredCategory(category);
     }
     setSearchData('');
   };
@@ -41,6 +47,23 @@ const StarredRecipes = ({
                     <i className="fas fa-star"></i> All Your Favorite Recipes
                   </h2>
                   <form className="search-form" onSubmit={e => handleSubmit(e)}>
+                    <div className="form-group">
+                      <select
+                        name="category"
+                        value={category}
+                        onChange={e => setCategory(e.target.value)}
+                      >
+                        <option value="0">All Categories</option>
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Lunch">Lunch</option>
+                        <option value="Dinner">Dinner</option>
+                        <option value="Desserts">Desserts</option>
+                        <option value="Drinks">Drinks</option>
+                        <option value="Sides">Sides</option>
+                        <option value="Breads">Breads</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
                     <input
                       type="text"
                       placeholder="Search..."
@@ -90,6 +113,7 @@ const StarredRecipes = ({
 StarredRecipes.propTypes = {
   getStarredRecipes: PropTypes.func.isRequired,
   searchStarredRecipes: PropTypes.func.isRequired,
+  searchStarredCategory: PropTypes.func.isRequired,
   recipes: PropTypes.object.isRequired
 };
 
@@ -99,5 +123,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getStarredRecipes, searchStarredRecipes }
+  { getStarredRecipes, searchStarredRecipes, searchStarredCategory }
 )(StarredRecipes);
